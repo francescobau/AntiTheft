@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.gruppo4.ringUp.R;
 
+import com.eis.smslibrary.SMSMessage;
+import com.example.antitheft.structure.GPSCommandHandler;
+
 /**
  * @author Francesco Bau'
  * @version 0.1
@@ -19,6 +22,7 @@ import com.gruppo4.ringUp.R;
  * Its current scope is just to send SMS, based by what does the User decide to do.
  * @since 24/02/2020
  */
+
 public class MainActivity extends AppCompatActivity {
 
     String telephoneNumber;
@@ -79,6 +83,29 @@ public class MainActivity extends AppCompatActivity {
         telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
 
         Log.d("TelephoneNumberCheck", "NEW Telephone number: " + telephoneNumber);
+
+        //TODO
+
+    }
+
+    /**
+     * //TODO
+     *
+     * @param smsMessage
+     */
+    public void sendCommand(SMSMessage smsMessage){
+        //TODO controllo per il comando: deve essere valido
+        new GPSCommandHandler().sendCommand(smsMessage);
+    }
+
+    /**
+     * //TODO
+     *
+     * @param smsMessage
+     */
+    public void isValidCommand(SMSMessage smsMessage){
+        //TODO
+
     }
 
     /**

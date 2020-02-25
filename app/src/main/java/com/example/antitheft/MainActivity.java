@@ -1,4 +1,4 @@
-package com.gruppo4.ringUp.activities;
+package com.example.antitheft;
 
 import android.content.Context;
 import android.os.Bundle;

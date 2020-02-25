@@ -10,7 +10,7 @@ public class GPSCommandReceiver {
 
     //TODO
 
-    private boolean isValidCommand(SMSMessage smsMessage){
+    private boolean isValidCommand(SMSMessage smsMessage) {
         //TODO: controllare se il messaggio ricevuto è un comando valido, il come lo decidi tu
         return false;
     }

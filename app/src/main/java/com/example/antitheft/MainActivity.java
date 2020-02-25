@@ -9,9 +9,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.eis.smslibrary.SMSMessage;
-import com.example.antitheft.R;
 import com.example.antitheft.structure.GPSCommandHandler;
 
 /**
@@ -93,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param smsMessage
      */
-    public void sendCommand(SMSMessage smsMessage){
+    public void sendCommand(SMSMessage smsMessage) {
         //TODO controllo per il comando: deve essere valido
         new GPSCommandHandler().sendCommand(smsMessage);
     }
@@ -103,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param smsMessage
      */
-    public void isValidCommand(SMSMessage smsMessage){
+    public void isValidCommand(SMSMessage smsMessage) {
         //TODO
 
     }
@@ -127,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             default:
                 command = SelectedCommand.INVALID;
         }
-        Log.d("SELECTED-COMMAND","Selected command: "+command);
+        Log.d("SELECTED-COMMAND", "Selected command: " + command);
     }
 
 

@@ -11,12 +11,13 @@ import com.eis.smslibrary.SMSPeer;
 public class GPSCommandHandler {
 
     //**********SENDING**********
+
     /**
      * //TODO
      *
      * @param smsMessage
      */
-    public void sendCommand(SMSMessage smsMessage){
+    public void sendCommand(SMSMessage smsMessage) {
         //TODO
     }
 
@@ -28,7 +29,7 @@ public class GPSCommandHandler {
      * @param smsMessage
      */
     //Questo metodo verrà chiamato dalla classe GPSCommandReceiver
-    public void onCommandReceived(SMSMessage smsMessage){
+    public void onCommandReceived(SMSMessage smsMessage) {
         SMSPeer smsPeer = smsMessage.getPeer(); //Peer a cui dobbiamo inviare la nostra posizione attuale
         Location location = new Location(GPSLocation.getCurrentLocation()); //La nostra posizione attuale
 
@@ -41,7 +42,7 @@ public class GPSCommandHandler {
      *
      * @param gpsLocation
      */
-    public void sendLocation(GPSLocation gpsLocation){
+    public void sendLocation(GPSLocation gpsLocation) {
         //TODO: 1) Trasformare la gpsLocation in un SMSMessage(parseLocation) 2) Inviare l'SMSMessage
     }
 
@@ -51,7 +52,7 @@ public class GPSCommandHandler {
      * @param location
      * @return
      */
-    public SMSMessage parseLocation(GPSLocation location){
+    public SMSMessage parseLocation(GPSLocation location) {
         //TODO
         return null;
     }

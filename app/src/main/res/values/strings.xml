@@ -5,5 +5,8 @@
     <string name="locateCommand">LOCATE</string>
     <string name="invalidCommand">[INVALID]</string>
     <string name="telephoneNumberField">(Insert telephone number here)</string>
+    <string name="prefixSign">+</string>
+    <string name="defaultPrefix">39</string>
+    <string name="telephoneNumberHint">Insert below the lost phone\'s telephone number. Remember the prefix (\"+39\" for Italy)</string>
 
 </resources>

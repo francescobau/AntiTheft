@@ -1,12 +1,13 @@
 package com.example.antitheft.structure;
 
 import com.eis.smslibrary.SMSMessage;
+import com.eis.smslibrary.SMSMessageHandler;
+import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
 
 /**
- * //TODO
+ *
  */
-//TODO Deve estendere qualcosa (leggi il README della smslibrary)
-public class GPSCommandReceiver {
+public class GPSCommandReceiver extends SMSReceivedServiceListener {
 
     //TODO
 
@@ -15,4 +16,8 @@ public class GPSCommandReceiver {
         return false;
     }
 
+    @Override
+    public void onMessageReceived(SMSMessage message) {
+
+    }
 }

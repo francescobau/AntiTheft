@@ -9,9 +9,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.gruppo4.ringUp.R;
 
 import com.eis.smslibrary.SMSMessage;
+import com.example.antitheft.R;
 import com.example.antitheft.structure.GPSCommandHandler;
 
 /**

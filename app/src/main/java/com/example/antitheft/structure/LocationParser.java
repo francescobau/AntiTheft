@@ -60,7 +60,7 @@ class LocationParser {
     /**
      * Overload of method setLocation(double,double).
      *
-     * @param location
+     * @param location the given Location instance.
      */
     public void setLocation(@NonNull Location location) {
         setLocation(location.getLatitude(), location.getLongitude());
@@ -85,28 +85,45 @@ class LocationParser {
     }
 
     /**
-     * @param acquired Tells if a valid location is acquired, or not.
+     * Method to set the acquired flag.
+     * @param acquired Tells if a valid location is acquired (true), or not (false).
      */
     private void setAcquired(@NonNull boolean acquired) {
         this.acquired = acquired;
     }
 
+    /**
+     * This method returns the current latitude instance.
+     * @return the current latitude instance.
+     */
     public double getLatitude() {
         return this.latitude;
     }
 
+    /**
+     * This method returns the current longitude instance.
+     * @return the current longitude instance.
+     */
     public double getLongitude() {
         return this.longitude;
     }
 
+    /**
+     * This method tells if location is acquired or not.
+     * @return true if acquired, false otherwise.
+     */
     public boolean isAcquired() {
         return acquired;
     }
 
+    /**
+     * Override of method Object.toString(). It gives information of the current location, as a String.
+     * @return information of the current location.
+     */
     public String toString() {
         if (!isAcquired())
             return "Location is NOT acquired.";
-        return "Latitude: " + getLatitude() + " Longitude: " + getLongitude();
+        return "Location acquired. Latitude: " + getLatitude() + "Longitude: " + getLongitude();
     }
 
 }

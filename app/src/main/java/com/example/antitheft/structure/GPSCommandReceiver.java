@@ -26,12 +26,13 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
     /**
      * Listener, needed to obtain incoming messages, and to check if they need to be handled as
      * command or not.
+     *
      * @param message The incoming message.
      */
     @Override
     public void onMessageReceived(SMSMessage message) {
-        if(!isValidCommand(message)) return;
+        if (!isValidCommand(message)) return;
 
-        
+
     }
 }

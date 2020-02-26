@@ -1,6 +1,5 @@
 package com.example.antitheft;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eis.smslibrary.SMSMessage;
 import com.example.antitheft.structure.GPSCommandHandler;
+import com.example.antitheft.structure.LocationParser;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -76,18 +76,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public String getCurrentLocation2() {
-        final Double[] coordinates = new Double[2];
+    public String getCurrentLocation() {
+        final LocationParser locationParser = new LocationParser();
         FusedLocationProviderClient client;
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                coordinates[0] = location.getLatitude();
-                coordinates[1] = location.getLongitude();
+                locationParser.setLocation(location);
             }
         });
-        return new GPSCommandHandler().parseCoordinates(coordinates);
+        return locationParser.toString();
     }
 
 }

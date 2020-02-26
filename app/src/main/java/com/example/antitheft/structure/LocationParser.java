@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
  * a custom toString method.
  * @since 26/02/2020
  */
-class LocationParser {
+public class LocationParser {
     static final String UNKNOWN_LOCATION_MESSAGE = "Location is NOT acquired.";
     private static final double DEFAULT_LOCATION = 0;
     private double latitude, longitude;

@@ -66,8 +66,7 @@ class LocationParser {
         setLocation(location.getLatitude(), location.getLongitude());
         // Check if location is acquired or not. Location without Accuracy means
         // it's not acquired, but with default values, instead.
-        if (location.hasAccuracy()) setAcquired(true);
-        else setAcquired(false);
+        if (!location.hasAccuracy()) setAcquired(false);
     }
 
     /**

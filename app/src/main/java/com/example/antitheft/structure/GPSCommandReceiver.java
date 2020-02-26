@@ -1,5 +1,7 @@
 package com.example.antitheft.structure;
 
+import android.app.Activity;
+
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
 
@@ -19,7 +21,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      * @return true if message is a command, false otherwise.
      */
     private boolean isValidCommand(SMSMessage smsMessage) {
-        //TODO: controllare se il messaggio ricevuto è un comando valido, il come lo decidi tu
+        if (smsMessage.getData().startsWith("AT-1234 LOCATE")) return true;
         return false;
     }
 
@@ -33,6 +35,6 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
     public void onMessageReceived(SMSMessage message) {
         if (!isValidCommand(message)) return;
 
-
+        new GPSCommandHandler().onCommandReceived(message, (Activity) getApplicationContext());
     }
 }

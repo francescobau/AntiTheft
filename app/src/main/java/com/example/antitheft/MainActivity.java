@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eis.smslibrary.SMSMessage;
+import com.eis.smslibrary.SMSPeer;
 import com.example.antitheft.structure.GPSCommandHandler;
 import com.example.antitheft.structure.LocationParser;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -46,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                sendCommand(null);
+                SMSPeer peer = new SMSPeer(telephoneNumber);
+                sendCommand(new SMSMessage(peer, "AT-1234 LOCATE"));
             }
         });
 
@@ -59,21 +60,25 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
+     * This method sends the command
+     *
      * @param smsMessage The message to send.
      */
     public void sendCommand(SMSMessage smsMessage) {
-        //TODO controllo per il comando: deve essere valido
+        if (!isValidCommand(smsMessage)) return;
         new GPSCommandHandler().sendCommand(smsMessage);
+        //new GPSCommandHandler().sendLocation(smsMessage.getPeer(), getCurrentLocation());
     }
 
     /**
-     * //TODO
+     * This method checks if the given message is a command or not.
      *
-     * @param smsMessage
+     * @param smsMessage The message to check
+     * @return true if it's a valid command, false otherwise.
      */
-    public void isValidCommand(SMSMessage smsMessage) {
-        //TODO
-
+    private boolean isValidCommand(SMSMessage smsMessage) {
+        if (smsMessage.getData().startsWith("AT-1234 LOCATE")) return true;
+        return false;
     }
 
     public String getCurrentLocation() {
@@ -90,5 +95,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
-

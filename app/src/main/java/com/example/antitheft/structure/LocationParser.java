@@ -31,9 +31,7 @@ class LocationParser {
      * @param longitude The given longitude. It can't be null.
      */
     public LocationParser(@NonNull double latitude, @NonNull double longitude) {
-        setLatitude(latitude);
-        setLongitude(longitude);
-        setAcquired(true);
+        setLocation(latitude, longitude);
     }
 
     /**
@@ -47,20 +45,37 @@ class LocationParser {
     }
 
     public void setLocation(@NonNull Location location) {
-        setLatitude(location.getLatitude());
-        setLongitude(location.getLongitude());
+        setLocation(location.getLatitude(),location.getLongitude());
+    }
+
+    public void setLocation(@NonNull double latitude, @NonNull double longitude){
+        setLatitude(latitude);
+        setLongitude(longitude);
         setAcquired(true);
     }
 
-    public void setLatitude(@NonNull double latitude) {
+    /**
+     * Method to set the latitude.
+     * @param latitude The given latitude. It can't be null.
+     */
+    private void setLatitude(@NonNull double latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(@NonNull double longitude) {
+    /**
+     * Method to set the longitude.
+     * @param longitude The given longitude. It can't be null.
+     */
+    private void setLongitude(@NonNull double longitude) {
         this.longitude = longitude;
     }
-    private void setAcquired(@NonNull boolean flag){
-        this.acquired = flag;
+
+    /**
+     *
+     * @param acquired Tells if a valid location is acquired, or not.
+     */
+    private void setAcquired(@NonNull boolean acquired){
+        this.acquired = acquired;
     }
 
     public double getLatitude(){

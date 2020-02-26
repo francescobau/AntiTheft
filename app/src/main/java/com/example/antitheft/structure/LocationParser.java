@@ -27,18 +27,18 @@ class LocationParser {
     /**
      * Main constructor. It sets the fields, given Latitude and Longitude.
      *
-     * @param latitude  The given latitude. It can't be null.
-     * @param longitude The given longitude. It can't be null.
+     * @param latitude  The given latitude.
+     * @param longitude The given longitude.
      */
-    public LocationParser(@NonNull double latitude, @NonNull double longitude) {
+    public LocationParser(double latitude, double longitude) {
         setLocation(latitude, longitude);
     }
 
     /**
      * Alternative constructor. It extracts Latitude and Longitude from the {@link android.location.Location}
-     * instance. It can't be null.
+     * instance. If the instance doesn't have an acquired location, acquired is set to false.
      *
-     * @param location The given <link>android.Location</link> instance.
+     * @param location The given {@link android.location.Location} instance. It can't be null.
      */
     public LocationParser(@NonNull Location location) {
         setLocation(location);
@@ -48,10 +48,10 @@ class LocationParser {
      * The core of this class. It acquires latitude and longitude, and, after acquiring these
      * parameters, it sets acquired flag to true.
      *
-     * @param latitude  The given latitude. It can't be null.
-     * @param longitude The given longitude. It can't be null.
+     * @param latitude  The given latitude.
+     * @param longitude The given longitude.
      */
-    public void setLocation(@NonNull double latitude, @NonNull double longitude) {
+    public void setLocation(double latitude, double longitude) {
         setLatitude(latitude);
         setLongitude(longitude);
         setAcquired(true);
@@ -60,40 +60,46 @@ class LocationParser {
     /**
      * Overload of method setLocation(double,double).
      *
-     * @param location the given Location instance.
+     * @param location the given {@link android.location.Location} instance. It can't be null.
      */
     public void setLocation(@NonNull Location location) {
         setLocation(location.getLatitude(), location.getLongitude());
+        // Check if location is acquired or not. Location without Accuracy means
+        // it's not acquired, but with default values, instead.
+        if (location.hasAccuracy()) setAcquired(true);
+        else setAcquired(false);
     }
 
     /**
      * Method to set the latitude.
      *
-     * @param latitude The given latitude. It can't be null.
+     * @param latitude The given latitude.
      */
-    private void setLatitude(@NonNull double latitude) {
+    private void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
     /**
      * Method to set the longitude.
      *
-     * @param longitude The given longitude. It can't be null.
+     * @param longitude The given longitude.
      */
-    private void setLongitude(@NonNull double longitude) {
+    private void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
     /**
      * Method to set the acquired flag.
+     *
      * @param acquired Tells if a valid location is acquired (true), or not (false).
      */
-    private void setAcquired(@NonNull boolean acquired) {
+    private void setAcquired(boolean acquired) {
         this.acquired = acquired;
     }
 
     /**
      * This method returns the current latitude instance.
+     *
      * @return the current latitude instance.
      */
     public double getLatitude() {
@@ -102,6 +108,7 @@ class LocationParser {
 
     /**
      * This method returns the current longitude instance.
+     *
      * @return the current longitude instance.
      */
     public double getLongitude() {
@@ -110,6 +117,7 @@ class LocationParser {
 
     /**
      * This method tells if location is acquired or not.
+     *
      * @return true if acquired, false otherwise.
      */
     public boolean isAcquired() {
@@ -118,6 +126,7 @@ class LocationParser {
 
     /**
      * Override of method Object.toString(). It gives information of the current location, as a String.
+     *
      * @return information of the current location.
      */
     public String toString() {

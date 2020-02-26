@@ -37,10 +37,10 @@ public class GPSCommandHandler {
     /**
      * This method handles the received command, replying with the last known GPS location.
      *
-     * @param smsMessage The received message.
+     * @param smsMessage The received message. It can't be null.
      * @param activity   Target Activity, in which location information is requested. It can't be null.
      */
-    public void onCommandReceived(SMSMessage smsMessage, @NonNull Activity activity) {
+    public void onCommandReceived(@NonNull SMSMessage smsMessage, @NonNull Activity activity) {
         SMSPeer smsPeer = smsMessage.getPeer();
         String currentLocation = getCurrentLocation(activity);
 

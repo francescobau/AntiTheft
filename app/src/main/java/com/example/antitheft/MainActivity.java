@@ -47,8 +47,12 @@ public class MainActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
+                Log.d("TelephoneNumberCheck", "NEW Telephone number: " + telephoneNumber);
                 SMSPeer peer = new SMSPeer(telephoneNumber);
-                sendCommand(new SMSMessage(peer, "AT-1234 LOCATE"));
+                if (peer == null || peer.getInvalidityMessage() != null)
+                    Log.d("PEER-ERROR", "Invalid peer.\nPeer: " + peer.toString() + "\nMessage: " + peer.getInvalidityMessage());
+                else sendCommand(new SMSMessage(peer, "AT-1234 LOCATE"));
             }
         });
 
@@ -77,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
      * @return true if it's a valid command, false otherwise.
      */
     private boolean isValidCommand(SMSMessage smsMessage) {
-        if (smsMessage.getData().startsWith("AT-1234 LOCATE")) return true;
+        if (smsMessage.getData().contains("AT-1234 LOCATE")) return true;
         return false;
     }
 

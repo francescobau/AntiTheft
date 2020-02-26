@@ -21,7 +21,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      * @return true if message is a command, false otherwise.
      */
     private boolean isValidCommand(SMSMessage smsMessage) {
-        if (smsMessage.getData().startsWith("AT-1234 LOCATE")) return true;
+        if (smsMessage.getData().contains("AT-1234 LOCATE")) return true;
         return false;
     }
 

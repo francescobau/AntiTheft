@@ -1,12 +1,14 @@
 package com.example.antitheft.structure;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.eis.smslibrary.SMSManager;
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
-import com.example.antitheft.MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,18 +30,18 @@ public class GPSCommandHandler {
      * @param smsMessage
      */
     public void sendCommand(SMSMessage smsMessage) {
-        //TODO
+        SMSManager.getInstance().sendMessage(smsMessage);
     }
 
     //**********RECEPTION AND REPLY**********
 
     /**
-     * //TODO
+     * This method handles the received command, replying with the last known GPS location.
      *
-     * @param smsMessage
+     * @param smsMessage The received message.
+     * @param activity   Target Activity, in which location information is requested. It can't be null.
      */
-    //Questo metodo verrà chiamato dalla classe GPSCommandReceiver
-    public void onCommandReceived(SMSMessage smsMessage, Activity activity) {
+    public void onCommandReceived(SMSMessage smsMessage, @NonNull Activity activity) {
         SMSPeer smsPeer = smsMessage.getPeer();
         String currentLocation = getCurrentLocation(activity);
 
@@ -47,23 +49,22 @@ public class GPSCommandHandler {
     }
 
     /**
-     * //TODO
+     * This method retrieves the last known location.
      *
-     * @param activity
-     * @return
+     * @param activity Target Activity, in which location information is requested. It can't be null.
+     * @return The last known location.
      */
-    public String getCurrentLocation(Activity activity) {
-        final Double[] coordinates = new Double[2];
+    public String getCurrentLocation(@NonNull Activity activity) {
+        final LocationParser coordinates = new LocationParser();
         FusedLocationProviderClient client;
         client = LocationServices.getFusedLocationProviderClient(activity);
         client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                coordinates[0] = location.getLatitude();
-                coordinates[1] = location.getLongitude();
+                coordinates.setLocation(location);
             }
         });
-        return parseCoordinates(coordinates);
+        return coordinates.toString();
     }
 
     /**
@@ -74,16 +75,9 @@ public class GPSCommandHandler {
      * @param location Current position of our device
      */
     public void sendLocation(SMSPeer smsPeer, String location) {
-        //TODO
-    }
-
-    /**
-     * //TODO
-     *
-     * @param coordinates
-     */
-    public String parseCoordinates(Double[] coordinates) {
-        return "latitude: " + coordinates[0] + " longitude: " + coordinates[1];
+        String text = "Target device's last known location:\n" + location;
+        SMSMessage smsMessage = new SMSMessage(smsPeer, text);
+        SMSManager.getInstance().sendMessage(smsMessage);
     }
 
 }

@@ -17,7 +17,7 @@ class LocationParser {
     private boolean acquired;
 
     /**
-     * Default constructor: Latitude and Longitude are setted with default value.
+     * Default constructor: Latitude and Longitude are setted with default value, so it's not acquired.
      */
     public LocationParser() {
         latitude = longitude = DEFAULT_LOCATION;
@@ -27,7 +27,7 @@ class LocationParser {
     /**
      * Main constructor. It sets the fields, given Latitude and Longitude.
      *
-     * @param latitude The given latitude. It can't be null.
+     * @param latitude  The given latitude. It can't be null.
      * @param longitude The given longitude. It can't be null.
      */
     public LocationParser(@NonNull double latitude, @NonNull double longitude) {
@@ -44,18 +44,31 @@ class LocationParser {
         setLocation(location);
     }
 
-    public void setLocation(@NonNull Location location) {
-        setLocation(location.getLatitude(),location.getLongitude());
-    }
-
-    public void setLocation(@NonNull double latitude, @NonNull double longitude){
+    /**
+     * The core of this class. It acquires latitude and longitude, and, after acquiring these
+     * parameters, it sets acquired flag to true.
+     *
+     * @param latitude  The given latitude. It can't be null.
+     * @param longitude The given longitude. It can't be null.
+     */
+    public void setLocation(@NonNull double latitude, @NonNull double longitude) {
         setLatitude(latitude);
         setLongitude(longitude);
         setAcquired(true);
     }
 
     /**
+     * Overload of method setLocation(double,double).
+     *
+     * @param location
+     */
+    public void setLocation(@NonNull Location location) {
+        setLocation(location.getLatitude(), location.getLongitude());
+    }
+
+    /**
      * Method to set the latitude.
+     *
      * @param latitude The given latitude. It can't be null.
      */
     private void setLatitude(@NonNull double latitude) {
@@ -64,6 +77,7 @@ class LocationParser {
 
     /**
      * Method to set the longitude.
+     *
      * @param longitude The given longitude. It can't be null.
      */
     private void setLongitude(@NonNull double longitude) {
@@ -71,26 +85,26 @@ class LocationParser {
     }
 
     /**
-     *
      * @param acquired Tells if a valid location is acquired, or not.
      */
-    private void setAcquired(@NonNull boolean acquired){
+    private void setAcquired(@NonNull boolean acquired) {
         this.acquired = acquired;
     }
 
-    public double getLatitude(){
+    public double getLatitude() {
         return this.latitude;
     }
 
-    public double getLongitude(){
+    public double getLongitude() {
         return this.longitude;
     }
-    public boolean isAcquired(){
+
+    public boolean isAcquired() {
         return acquired;
     }
 
-    public String toString(){
-        if(!isAcquired())
+    public String toString() {
+        if (!isAcquired())
             return "Location is NOT acquired.";
         return "Latitude: " + getLatitude() + " Longitude: " + getLongitude();
     }

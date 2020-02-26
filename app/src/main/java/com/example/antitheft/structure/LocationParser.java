@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 /**
  * @author Francesco Bau'
  * @version 0.1
- * This class retrieves the coordinates of a certain <link>android.Location</link> , and has
- * a custom toString.
+ * This class retrieves the coordinates of a certain {@link android.location.Location}  , and has
+ * a custom toString method.
  * @since 26/02/2020
  */
 class LocationParser {
@@ -35,7 +35,7 @@ class LocationParser {
     }
 
     /**
-     * Alternative constructor. It extracts Latitude and Longitude from the <link>android.Location</link>
+     * Alternative constructor. It extracts Latitude and Longitude from the {@link android.location.Location}
      * instance. It can't be null.
      *
      * @param location The given <link>android.Location</link> instance.

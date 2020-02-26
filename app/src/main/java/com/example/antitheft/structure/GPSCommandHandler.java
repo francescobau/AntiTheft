@@ -6,7 +6,11 @@ import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
 
 /**
- * //TODO
+ * @author Francesco Bau'
+ * @version 0.1
+ * <p>
+ * This class is used to send commands.
+ * @since 25/02/2020
  */
 public class GPSCommandHandler {
 

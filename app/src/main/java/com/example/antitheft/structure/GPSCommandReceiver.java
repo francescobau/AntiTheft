@@ -1,11 +1,14 @@
 package com.example.antitheft.structure;
 
 import com.eis.smslibrary.SMSMessage;
-import com.eis.smslibrary.SMSMessageHandler;
 import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
 
 /**
- *
+ * @author Francesco Bau'
+ * @version 0.1
+ * <p>
+ * This class captures all incoming messages.
+ * @since 25/02/2020
  */
 public class GPSCommandReceiver extends SMSReceivedServiceListener {
 

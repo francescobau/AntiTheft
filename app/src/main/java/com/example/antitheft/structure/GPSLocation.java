@@ -5,7 +5,11 @@ import android.location.Location;
 import com.eis.smslibrary.SMSPeer;
 
 /**
- * //TODO
+ * @author Francesco Bau'
+ * @version 0.1
+ * <p>
+ * This class manages the coordinates of a certain peer.
+ * @since 25/02/2020
  */
 public class GPSLocation {
 

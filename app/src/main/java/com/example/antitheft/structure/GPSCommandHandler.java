@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.location.Location;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.eis.smslibrary.SMSManager;
 import com.eis.smslibrary.SMSMessage;
@@ -55,24 +54,24 @@ public class GPSCommandHandler {
      * @return The last known location.
      */
     public String getCurrentLocation(@NonNull Activity activity) {
-        final LocationParser coordinates = new LocationParser();
+        final LocationParser locationParser = new LocationParser();
         FusedLocationProviderClient client;
         client = LocationServices.getFusedLocationProviderClient(activity);
         client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                coordinates.setLocation(location);
+                locationParser.setLocation(location);
             }
         });
-        return coordinates.toString();
+        return locationParser.toString();
     }
 
     /**
      * Method used to send our location to the peer who sent us the request.
      * The location is sent through SMS using the {@link com.eis.smslibrary.SMSManager} class.
      *
-     * @param smsPeer  The peer who sent us the request
-     * @param location Current position of our device
+     * @param smsPeer  The peer who sent us the request.
+     * @param location Current position of our device.
      */
     public void sendLocation(SMSPeer smsPeer, String location) {
         String text = "Target device's last known location:\n" + location;

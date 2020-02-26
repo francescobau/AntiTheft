@@ -3,7 +3,6 @@ package com.example.antitheft.structure;
 import android.location.Location;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * @author Francesco Bau'
@@ -15,16 +14,26 @@ import androidx.annotation.Nullable;
 class LocationParser {
     private static final double DEFAULT_LOCATION = 0;
     private double latitude, longitude;
+    private boolean acquired;
+
+    /**
+     * Default constructor: Latitude and Longitude are setted with default value.
+     */
+    public LocationParser() {
+        latitude = longitude = DEFAULT_LOCATION;
+        setAcquired(false);
+    }
 
     /**
      * Main constructor. It sets the fields, given Latitude and Longitude.
      *
-     * @param latitude
-     * @param longitude
+     * @param latitude The given latitude. It can't be null.
+     * @param longitude The given longitude. It can't be null.
      */
-    public LocationParser(@Nullable double latitude, @Nullable double longitude) {
+    public LocationParser(@NonNull double latitude, @NonNull double longitude) {
         setLatitude(latitude);
         setLongitude(longitude);
+        setAcquired(true);
     }
 
     /**
@@ -37,24 +46,21 @@ class LocationParser {
         setLocation(location);
     }
 
-    /**
-     * Default constructor: Latitude and Longitude are setted with default value.
-     */
-    public LocationParser() {
-        latitude = longitude = DEFAULT_LOCATION;
-    }
-
     public void setLocation(@NonNull Location location) {
         setLatitude(location.getLatitude());
         setLongitude(location.getLongitude());
+        setAcquired(true);
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(@NonNull double latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(@NonNull double longitude) {
         this.longitude = longitude;
+    }
+    private void setAcquired(@NonNull boolean flag){
+        this.acquired = flag;
     }
 
     public double getLatitude(){
@@ -64,8 +70,13 @@ class LocationParser {
     public double getLongitude(){
         return this.longitude;
     }
+    public boolean isAcquired(){
+        return acquired;
+    }
 
     public String toString(){
+        if(!isAcquired())
+            return "Location is NOT acquired.";
         return "Latitude: " + getLatitude() + " Longitude: " + getLongitude();
     }
 

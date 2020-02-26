@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
  * @since 26/02/2020
  */
 class LocationParser {
+    static final String UNKNOWN_LOCATION_MESSAGE = "Location is NOT acquired.";
     private static final double DEFAULT_LOCATION = 0;
     private double latitude, longitude;
     private boolean acquired;
@@ -130,7 +131,7 @@ class LocationParser {
      */
     public String toString() {
         if (!isAcquired())
-            return "Location is NOT acquired.";
+            return UNKNOWN_LOCATION_MESSAGE;
         return "Location acquired. Latitude: " + getLatitude() + "Longitude: " + getLongitude();
     }
 

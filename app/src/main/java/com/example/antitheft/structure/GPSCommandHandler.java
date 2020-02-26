@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.location.Location;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.eis.smslibrary.SMSManager;
 import com.eis.smslibrary.SMSMessage;
@@ -24,11 +25,11 @@ public class GPSCommandHandler {
     //**********SENDING**********
 
     /**
-     * //TODO
+     * This method sends a message.
      *
-     * @param smsMessage
+     * @param smsMessage The message to send. It can't be null.
      */
-    public void sendCommand(SMSMessage smsMessage) {
+    public void sendCommand(@NonNull SMSMessage smsMessage) {
         SMSManager.getInstance().sendMessage(smsMessage);
     }
 
@@ -70,11 +71,13 @@ public class GPSCommandHandler {
      * Method used to send our location to the peer who sent us the request.
      * The location is sent through SMS using the {@link com.eis.smslibrary.SMSManager} class.
      *
-     * @param smsPeer  The peer who sent us the request.
+     * @param smsPeer  The peer who sent us the request. It can't be null.
      * @param location Current position of our device.
      */
-    public void sendLocation(SMSPeer smsPeer, String location) {
-        String text = "Target device's last known location:\n" + location;
+    public void sendLocation(@NonNull SMSPeer smsPeer, @Nullable String location) {
+        String text;
+        if (location == null) text = LocationParser.UNKNOWN_LOCATION_MESSAGE;
+        else text = "Target device's last known location:\n" + location;
         SMSMessage smsMessage = new SMSMessage(smsPeer, text);
         SMSManager.getInstance().sendMessage(smsMessage);
     }

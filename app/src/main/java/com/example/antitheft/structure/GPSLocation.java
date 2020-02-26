@@ -2,6 +2,8 @@ package com.example.antitheft.structure;
 
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+
 import com.eis.smslibrary.SMSPeer;
 
 /**
@@ -22,12 +24,15 @@ public class GPSLocation {
      * @param peer
      * @param location
      */
-    GPSLocation(SMSPeer peer, Location location) {
-        //TODO
+    GPSLocation(@NonNull SMSPeer peer, @NonNull Location location) {
+        this.peer = peer;
+        this.location = location;
     }
 
     /**
-     * //TODO
+     * This method requests the system to retrieve the current GPS Location.
+     *
+     * @return The device's current location (system call).
      */
     public static Location getCurrentLocation() {
         //TODO
@@ -35,19 +40,21 @@ public class GPSLocation {
     }
 
     /**
-     * //TODO
+     * This method returns the current peer in this object.
+     *
+     * @return The current peer.
      */
     public SMSPeer getPeer() {
-        //TODO
-        return null;
+        return this.peer;
     }
 
     /**
-     * //TODO
+     * This method returns the current location in this object.
+     *
+     * @return The current location.
      */
-    public GPSLocation getLocation() {
-        //TODO
-        return null;
+    public Location getLocation() {
+        return this.location;
     }
 
 }

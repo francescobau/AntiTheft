@@ -1,6 +1,8 @@
 package com.example.antitheft;
 
+import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eis.smslibrary.SMSMessage;
 import com.example.antitheft.structure.GPSCommandHandler;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 /**
  * @author Francesco Bau'
@@ -25,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     String telephoneNumber;
 
     View sendButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
                 sendCommand(null);
             }
         });
+
+        //Controllo per vedere che Location mi viene restituita
+        String currentLoc = new GPSCommandHandler().getCurrentLocation(MainActivity.this);
+        Log.d("MainActivity", "currentLoc: " + currentLoc);
 
     }
 
@@ -68,6 +76,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public String getCurrentLocation2() {
+        final Double[] coordinates = new Double[2];
+        FusedLocationProviderClient client;
+        client = LocationServices.getFusedLocationProviderClient(this);
+        client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                coordinates[0] = location.getLatitude();
+                coordinates[1] = location.getLongitude();
+            }
+        });
+        return new GPSCommandHandler().parseCoordinates(coordinates);
+    }
 
 }
 

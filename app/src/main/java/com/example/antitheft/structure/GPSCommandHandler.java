@@ -1,7 +1,15 @@
 package com.example.antitheft.structure;
 
+import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
+import com.example.antitheft.MainActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 /**
  * @author Francesco Bau'
@@ -31,19 +39,31 @@ public class GPSCommandHandler {
      * @param smsMessage
      */
     //Questo metodo verrà chiamato dalla classe GPSCommandReceiver
-    public void onCommandReceived(SMSMessage smsMessage) {
+    public void onCommandReceived(SMSMessage smsMessage, Activity activity) {
         SMSPeer smsPeer = smsMessage.getPeer();
-        String currentLocation = getCurrentLocation();
+        String currentLocation = getCurrentLocation(activity);
 
         sendLocation(smsPeer, currentLocation);
     }
 
     /**
-     * @return the current location in String form
+     * //TODO
+     *
+     * @param activity
+     * @return
      */
-    private String getCurrentLocation() {
-        //TODO
-        return null;
+    public String getCurrentLocation(Activity activity) {
+        final Double[] coordinates = new Double[2];
+        FusedLocationProviderClient client;
+        client = LocationServices.getFusedLocationProviderClient(activity);
+        client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                coordinates[0] = location.getLatitude();
+                coordinates[1] = location.getLongitude();
+            }
+        });
+        return parseCoordinates(coordinates);
     }
 
     /**
@@ -55,6 +75,15 @@ public class GPSCommandHandler {
      */
     public void sendLocation(SMSPeer smsPeer, String location) {
         //TODO
+    }
+
+    /**
+     * //TODO
+     *
+     * @param coordinates
+     */
+    public String parseCoordinates(Double[] coordinates) {
+        return "latitude: " + coordinates[0] + " longitude: " + coordinates[1];
     }
 
 }

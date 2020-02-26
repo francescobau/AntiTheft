@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.eis.smslibrary.SMSPeer;
 
+
 /**
  * @author Francesco Bau'
  * @version 0.1
@@ -15,6 +16,7 @@ import com.eis.smslibrary.SMSPeer;
  */
 public class GPSLocation {
 
+    private static final String DEFAULT_GPS_PROVIDER = "GPSLocation";
     Location location;
     SMSPeer peer;
 
@@ -30,13 +32,14 @@ public class GPSLocation {
     }
 
     /**
-     * This method requests the system to retrieve the current GPS Location.
+     * This method is supposed to request the system to retrieve the current GPS Location.
+     * <p>
+     * But it currently returns a dummy Location, instead.
      *
-     * @return The device's current location (system call).
+     * @return A dummy Location instance.
      */
     public static Location getCurrentLocation() {
-        //TODO
-        return null;
+        return new Location(DEFAULT_GPS_PROVIDER);
     }
 
     /**

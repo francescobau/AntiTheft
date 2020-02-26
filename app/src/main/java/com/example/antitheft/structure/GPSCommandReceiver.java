@@ -21,6 +21,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
 
     @Override
     public void onMessageReceived(SMSMessage message) {
-
+        //TODO: verrà utilizzato il metodo sopra per vedere se il messaggio ricevuto è un comando valido:
+        //TODO: se si, allora chiama la classe GPSCommandHandler e avvia la procedura di risposta alla richiesta
     }
 }

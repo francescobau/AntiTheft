@@ -1,7 +1,5 @@
 package com.example.antitheft.structure;
 
-import android.location.Location;
-
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
 
@@ -34,31 +32,29 @@ public class GPSCommandHandler {
      */
     //Questo metodo verrà chiamato dalla classe GPSCommandReceiver
     public void onCommandReceived(SMSMessage smsMessage) {
-        SMSPeer smsPeer = smsMessage.getPeer(); //Peer a cui dobbiamo inviare la nostra posizione attuale
-        Location location = new Location(GPSLocation.getCurrentLocation()); //La nostra posizione attuale
+        SMSPeer smsPeer = smsMessage.getPeer();
+        String currentLocation = getCurrentLocation();
 
-        GPSLocation gpsLocation = new GPSLocation(smsPeer, location);
-        sendLocation(gpsLocation);
+        sendLocation(smsPeer, currentLocation);
     }
 
     /**
-     * //TODO
-     *
-     * @param gpsLocation
+     * @return the current location in String form
      */
-    public void sendLocation(GPSLocation gpsLocation) {
-        //TODO: 1) Trasformare la gpsLocation in un SMSMessage(parseLocation) 2) Inviare l'SMSMessage
-    }
-
-    /**
-     * //TODO
-     *
-     * @param location
-     * @return
-     */
-    public SMSMessage parseLocation(GPSLocation location) {
+    private String getCurrentLocation() {
         //TODO
         return null;
+    }
+
+    /**
+     * Method used to send our location to the peer who sent us the request.
+     * The location is sent through SMS using the {@link com.eis.smslibrary.SMSManager} class.
+     *
+     * @param smsPeer  The peer who sent us the request
+     * @param location Current position of our device
+     */
+    public void sendLocation(SMSPeer smsPeer, String location) {
+        //TODO
     }
 
 }

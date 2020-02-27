@@ -17,7 +17,7 @@ import com.example.antitheft.permissions.PermissionsHandler;
  * Class used to inform the user of which permissions the app needed and requires them
  *
  * @author Francesco Bau', helped by Alberto Ursino.
- * @since 07/01/2020
+ * @since 27/02/2020
  */
 public class PermissionsActivity extends AppCompatActivity {
 
@@ -57,7 +57,7 @@ public class PermissionsActivity extends AppCompatActivity {
      * If the user has not granted all the permissions he cannot continue and a toast will be displayed telling that the app needs the permissions, otherwise calls {@link #changeActivity()}.
      * If the user has selected the option "Don't show it again" must go to the app settings and give them.
      *
-     * @param requestCode  has to be equals to {@link PermissionsHandler#REQUEST_CODE}
+     * @param requestCode  has to be the same as {@link PermissionsHandler#REQUEST_CODE}
      * @param permissions  requested by the {@link Activity#requestPermissions(String[], int)}
      * @param grantResults Result of this callback: 0 -> Permissions GRANTED; -1 -> Permissions NOT GRANTED
      */
@@ -65,9 +65,11 @@ public class PermissionsActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         boolean check = true;
 
+        final int NOT_GRANTED = -1;
+
         if (requestCode == PermissionsHandler.REQUEST_CODE) {
             for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] == -1) {
+                if (grantResults[i] == NOT_GRANTED) {
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_app_needs_permissions), Toast.LENGTH_SHORT).show();
                     check = false;
                     break;

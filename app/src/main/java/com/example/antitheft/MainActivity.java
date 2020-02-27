@@ -34,7 +34,16 @@ public class MainActivity extends AppCompatActivity {
     View sendButton;
     static Activity activity;
 
+    private static final String APP_CODE = "AT";
+    private static final int DEFAULT_PASSWORD = 1234;
+
+    private static final String LOCATE_COMMAND = "LOCATE";
+
+    // Full Default LOCATE command: "AT-1234 LOCATE"
+    public static final String FULL_DEFAULT_LOCATE_COMMAND = APP_CODE + "-" + DEFAULT_PASSWORD + " " + LOCATE_COMMAND;
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -54,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 String telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
                 //TODO mettere il controllo del peer perchè con la vecchia versione della smslibrary non c'è più il metodo simpatico
                 SMSPeer peer = new SMSPeer(telephoneNumber);
-                sendCommand(new SMSMessage(peer, "AT-1234 LOCATE"));
+                sendCommand(new SMSMessage(peer, FULL_DEFAULT_LOCATE_COMMAND));
             }
         });
     }

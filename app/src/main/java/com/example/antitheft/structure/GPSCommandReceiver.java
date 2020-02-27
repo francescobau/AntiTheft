@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
+import com.example.antitheft.MainActivity;
 
 /**
  * @author Francesco Bau'
@@ -35,7 +36,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      * @return true if message is a command, false otherwise.
      */
     private boolean isValidCommand(SMSMessage smsMessage) {
-        return smsMessage.getData().contains("AT-1234 LOCATE");
+        return smsMessage.getData().contains(MainActivity.FULL_DEFAULT_LOCATE_COMMAND);
     }
 
 }

@@ -12,7 +12,8 @@ import java.util.ArrayList;
  * Class used to manage permissions.
  * Through this class you can request permissions, check them and other useful things such as get all denied permissions.
  *
- * @author Francesco Bau'.
+ * @author Francesco Bau'
+ * @since 26/02/2020
  */
 public class PermissionsHandler {
 

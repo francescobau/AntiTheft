@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
  * @since 26/02/2020
  */
 public class LocationParser {
-    static final String UNKNOWN_LOCATION_MESSAGE = "Location is NOT acquired.";
+    private static final String UNKNOWN_LOCATION_MESSAGE = "Location is NOT acquired.";
     private static final double DEFAULT_LOCATION = 0;
     private double latitude, longitude;
     private boolean acquired;

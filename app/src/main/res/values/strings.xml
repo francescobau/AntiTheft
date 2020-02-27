@@ -2,4 +2,7 @@
     <string name="app_name">AntiTheft</string>
     <string name="sendCommand">TAKE POSITION</string>
     <string name="telephoneNumberField">Phone number</string>
+
+    <string name="toast_app_needs_permissions">App needs these permissions</string>
+    <string name="toast_permissions_already_granted">All the permissions are already granted, nice!</string>
 </resources>

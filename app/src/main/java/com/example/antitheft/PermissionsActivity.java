@@ -22,11 +22,11 @@ import com.example.antitheft.permissions.PermissionsHandler;
 public class PermissionsActivity extends AppCompatActivity {
 
     /**
-     * Necessary permissions: SEND_SMS, RECEIVE_SMS, READ_CONTACTS,
+     * Necessary permissions: SEND_SMS, RECEIVE_SMS,
      * ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION, ACCESS_BACKGROUND_LOCATION
      */
-    static final String[] permissions = new String[]{Manifest.permission.SEND_SMS,
-            Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_CONTACTS,
+    static final String[] permissions = new String[]{
+            Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS,
             Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_BACKGROUND_LOCATION};
 

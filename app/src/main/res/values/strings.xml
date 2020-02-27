@@ -3,6 +3,13 @@
     <string name="sendCommand">TAKE POSITION</string>
     <string name="telephoneNumberField">Phone number</string>
 
+    <string name="welcome_message">Welcome to AntiTheft!</string>
+
     <string name="toast_app_needs_permissions">App needs these permissions</string>
     <string name="toast_permissions_already_granted">All the permissions are already granted, nice!</string>
+
+    <string name="sms_permission_explanation">The app works without data connection. It needs to be able to send and receive SMS messages, in order to send and receive commands.</string>
+    <string name="location_permission_explanation">This app needs to access your location, in order to make you able to retrieve this phone\'s location when you lose it.</string>
+
+    <string name="give_permissions_button_text">OK, understood!</string>
 </resources>

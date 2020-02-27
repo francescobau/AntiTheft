@@ -1,11 +1,9 @@
 package com.example.antitheft.structure;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
-import com.example.antitheft.MainActivity;
 
 /**
  * @author Francesco Bau'

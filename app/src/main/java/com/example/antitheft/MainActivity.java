@@ -1,5 +1,6 @@
 package com.example.antitheft;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -9,9 +10,11 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.eis.smslibrary.SMSManager;
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
 import com.example.antitheft.structure.GPSCommandHandler;
+import com.example.antitheft.structure.GPSCommandReceiver;
 import com.example.antitheft.structure.LocationParser;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -25,12 +28,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
  * Its current scope is just to send SMS, based by what does the User decide to do.
  * @since 24/02/2020
  */
-
 public class MainActivity extends AppCompatActivity {
 
-    String telephoneNumber;
-
+    EditText telephoneField;
     View sendButton;
+    static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,29 +41,23 @@ public class MainActivity extends AppCompatActivity {
 
         Context context = getApplicationContext();
 
-        telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
-        Log.d("TelephoneNumberCheck", "Telephone number: " + telephoneNumber);
-
-
+        //Setting the listener
+        SMSManager.getInstance().setReceivedListener(GPSCommandReceiver.class, context);
+        Log.d("MainActivity", "Listener set");
+        telephoneField = findViewById(R.id.telephoneNumber);
         sendButton = findViewById(R.id.sendButton);
+        activity = this;
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
-                Log.d("TelephoneNumberCheck", "NEW Telephone number: " + telephoneNumber);
+                String telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
+                //TODO mettere il controllo del peer perchè con la vecchia versione della smslibrary non c'è più il metodo simpatico
                 SMSPeer peer = new SMSPeer(telephoneNumber);
-                if (peer == null || peer.getInvalidityMessage() != null)
-                    Log.d("PEER-ERROR", "Invalid peer.\nPeer: " + peer.toString() + "\nMessage: " + peer.getInvalidityMessage());
-                else sendCommand(new SMSMessage(peer, "AT-1234 LOCATE"));
+                sendCommand(new SMSMessage(peer, "AT-1234 LOCATE"));
             }
         });
-
-        //Controllo per vedere che Location mi viene restituita
-        String currentLoc = new GPSCommandHandler().getCurrentLocation(MainActivity.this);
-        Log.d("MainActivity", "currentLoc: " + currentLoc);
-
     }
-
 
     /**
      * This method sends the command
@@ -69,27 +65,19 @@ public class MainActivity extends AppCompatActivity {
      * @param smsMessage The message to send.
      */
     public void sendCommand(SMSMessage smsMessage) {
-        if (!isValidCommand(smsMessage)) return;
         new GPSCommandHandler().sendCommand(smsMessage);
-        //new GPSCommandHandler().sendLocation(smsMessage.getPeer(), getCurrentLocation());
     }
 
     /**
-     * This method checks if the given message is a command or not.
+     * This method retrieves the last known location.
      *
-     * @param smsMessage The message to check
-     * @return true if it's a valid command, false otherwise.
+     * @return The last known location.
      */
-    private boolean isValidCommand(SMSMessage smsMessage) {
-        if (smsMessage.getData().contains("AT-1234 LOCATE")) return true;
-        return false;
-    }
-
-    public String getCurrentLocation() {
+    public static String getCurrentLocation() {
         final LocationParser locationParser = new LocationParser();
         FusedLocationProviderClient client;
-        client = LocationServices.getFusedLocationProviderClient(this);
-        client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+        client = LocationServices.getFusedLocationProviderClient(activity);
+        client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);

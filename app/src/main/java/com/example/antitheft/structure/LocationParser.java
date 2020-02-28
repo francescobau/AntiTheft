@@ -53,9 +53,10 @@ public class LocationParser {
      * @param longitude The given longitude.
      */
     public void setLocation(double latitude, double longitude) {
+        setAcquired(true);
         setLatitude(latitude);
         setLongitude(longitude);
-        setAcquired(true);
+        notifyAll();
     }
 
     /**
@@ -121,7 +122,7 @@ public class LocationParser {
      * @return true if acquired, false otherwise.
      */
     public boolean isAcquired() {
-        return acquired;
+        return this.acquired;
     }
 
     /**
@@ -130,9 +131,10 @@ public class LocationParser {
      * @return information of the current location.
      */
     public String toString() {
-        if (!isAcquired())
-            return UNKNOWN_LOCATION_MESSAGE;
-        return "Location acquired. Latitude: " + getLatitude() + "Longitude: " + getLongitude();
+        if (isAcquired())
+            return "Location acquired. Latitude: " + getLatitude() + "Longitude: " + getLongitude();
+        return UNKNOWN_LOCATION_MESSAGE;
+
     }
 
 }

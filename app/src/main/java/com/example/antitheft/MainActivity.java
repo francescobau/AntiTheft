@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
 
+    private static LocationParser locationParser = new LocationParser();
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,17 +113,19 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return The last known location.
      */
+    //TODO Gestione asincronia.
     public static String getCurrentLocation() {
-        final LocationParser locationParser = new LocationParser();
         FusedLocationProviderClient client;
         client = LocationServices.getFusedLocationProviderClient(activity);
         client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);
+                notifyAll();
             }
         });
         return locationParser.toString();
     }
+
 
 }

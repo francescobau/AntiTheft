@@ -2,6 +2,8 @@ package com.example.antitheft.structure;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
 import com.example.antitheft.MainActivity;
@@ -32,11 +34,12 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
     /**
      * This method checks if the given message is a command or not.
      *
-     * @param smsMessage The message to check
+     * @param smsMessage The message to check. It can't be null.
      * @return true if message is a command, false otherwise.
      */
-    private boolean isValidCommand(SMSMessage smsMessage) {
-        return smsMessage.getData().contains(MainActivity.FULL_DEFAULT_LOCATE_COMMAND);
+    private boolean isValidCommand(@NonNull SMSMessage smsMessage) {
+        boolean flag = smsMessage.getData().contains(MainActivity.FULL_DEFAULT_LOCATE_COMMAND);
+        return flag;
     }
 
 }

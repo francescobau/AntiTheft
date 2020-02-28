@@ -1,5 +1,6 @@
 package com.example.antitheft;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
@@ -43,6 +44,17 @@ public class MainActivity extends AppCompatActivity {
     // Full Default LOCATE command: "AT-1234 LOCATE"
     public static final String FULL_DEFAULT_LOCATE_COMMAND = APP_CODE + "-" + DEFAULT_PASSWORD + " " + LOCATE_COMMAND;
 
+    /**
+     * Necessary permissions: SEND_SMS, RECEIVE_SMS,
+     * ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION, ACCESS_BACKGROUND_LOCATION
+     */
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION};
+
+    private static final int REQUEST_CODE = 0;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                 sendCommand(new SMSMessage(peer, FULL_DEFAULT_LOCATE_COMMAND));
             }
         });
+
+        requestPermissions(PERMISSIONS,REQUEST_CODE);
+
     }
 
     /**

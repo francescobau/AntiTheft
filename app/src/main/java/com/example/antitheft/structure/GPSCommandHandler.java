@@ -22,7 +22,7 @@ public class GPSCommandHandler {
     //**********SENDING**********
 
     /**
-     * This method sends a message.
+     * This method sends a given message.
      *
      * @param smsMessage The message to send. It can't be null.
      */

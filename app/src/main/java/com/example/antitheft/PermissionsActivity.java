@@ -58,8 +58,11 @@ public class PermissionsActivity extends AppCompatActivity {
      * If the user has selected the option "Don't show it again" must go to the app settings and give them.
      *
      * @param requestCode  has to be the same as {@link PermissionsHandler#REQUEST_CODE}
-     * @param permissions  requested by the {@link Activity#requestPermissions(String[], int)}
+     * @param permissions  The permissions requested by the {@link Activity#requestPermissions(String[], int)}. Never null.
      * @param grantResults Result of this callback: 0 -> Permissions GRANTED; -1 -> Permissions NOT GRANTED
+     *                     which is either {@link android.content.pm.PackageManager#PERMISSION_GRANTED}
+     *                     or {@link android.content.pm.PackageManager#PERMISSION_DENIED}. Never null.
+     * @see #requestPermissions(String[], int)
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

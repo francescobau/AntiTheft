@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eis.smslibrary.SMSManager;
@@ -71,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method sends the command
      *
-     * @param smsMessage The message to send.
+     * @param smsMessage The message to send. It can't be null.
      */
-    public void sendCommand(SMSMessage smsMessage) {
-        new GPSCommandHandler().sendCommand(smsMessage);
+    public void sendCommand(@NonNull SMSMessage smsMessage) {
+        if (smsMessage != null)
+            new GPSCommandHandler().sendCommand(smsMessage);
     }
 
     /**

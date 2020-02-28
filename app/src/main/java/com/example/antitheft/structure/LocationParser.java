@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 public class LocationParser {
     private static final String UNKNOWN_LOCATION_MESSAGE = "Location is NOT acquired.";
     private static final double DEFAULT_LOCATION = 0;
+    static final String DEFAULT_PROVIDER = "Default";
+
     private double latitude, longitude;
     private boolean acquired;
 
@@ -60,14 +62,17 @@ public class LocationParser {
 
     /**
      * Overload of method setLocation(double,double).
+     * It also checks if the Location instance is default or not.
      *
      * @param location the given {@link android.location.Location} instance. It can't be null.
      */
     public void setLocation(@NonNull Location location) {
         setLocation(location.getLatitude(), location.getLongitude());
-        // Check if location is acquired or not. Location without Accuracy means
+        // Check if location is acquired or not. Location with default values and without Accuracy means
         // it's not acquired, but with default values, instead.
-        if (!location.hasAccuracy()) setAcquired(false);
+        if (location.getLatitude() == new Location(DEFAULT_PROVIDER).getLatitude() &&
+                location.getLongitude() == new Location(DEFAULT_PROVIDER).getLongitude() &&
+                !location.hasAccuracy()) setAcquired(false);
     }
 
     /**

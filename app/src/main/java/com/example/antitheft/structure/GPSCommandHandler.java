@@ -1,6 +1,5 @@
 package com.example.antitheft.structure;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;

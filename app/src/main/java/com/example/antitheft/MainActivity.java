@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
 
+    private LocationParser locationParser = new LocationParser();
+    private FusedLocationProviderClient client;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
      */
     //TODO Gestione asincronia.
     public String getCurrentLocation() {
-        final LocationParser locationParser = new LocationParser();
-        FusedLocationProviderClient client;
         client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
@@ -124,20 +125,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         /**
-        int i = 10;
-        while(!locationParser.isAcquired() && i>0){
-            try {
-                Thread.sleep(100);
-                i--;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+         int i = 10;
+         while(!locationParser.isAcquired() && i>0){
+         try {
+         Thread.sleep(100);
+         i--;
+         } catch (InterruptedException e) {
+         e.printStackTrace();
+         }
+         }
          */
         Log.d("LOCATION", "toString() of locationParser: " + locationParser.toString());
         return locationParser.toString();
     }
 
+    /**
+     * //TODO
+     *
+     * @return
+     */
     public static MainActivity getMainActivity() {
         return activity;
     }

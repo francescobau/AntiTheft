@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import com.example.antitheft.structure.LocationParser;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
  * @author Francesco Bau'
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
      * ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION, ACCESS_BACKGROUND_LOCATION
      */
     static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.WAKE_LOCK,
             Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_BACKGROUND_LOCATION};
 
@@ -73,14 +76,23 @@ public class MainActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
-                //TODO mettere il controllo del peer perchè con la vecchia versione della smslibrary non c'è più il metodo simpatico
-                SMSPeer peer = new SMSPeer(telephoneNumber);
-                sendCommand(new SMSMessage(peer, FULL_DEFAULT_LOCATE_COMMAND));
+                boolean permissionsGranted = checkSelfPermission(Manifest.permission.SEND_SMS) == PERMISSION_GRANTED;
+                if (permissionsGranted) {
+                    String telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
+                    //TODO mettere il controllo del peer perchè con la vecchia versione della smslibrary non c'è più il metodo simpatico
+                    SMSPeer peer = new SMSPeer(telephoneNumber);
+                    if (peer == null)
+                        Toast.makeText(context, "The peer is not valid.", Toast.LENGTH_SHORT).show();
+                    else sendCommand(new SMSMessage(peer, FULL_DEFAULT_LOCATE_COMMAND));
+                } else {
+                    Toast.makeText(context, "This app needs SEND_SMS permissions in order to send the command via SMS.", Toast.LENGTH_SHORT).show();
+                    requestPermissions(new String[]{Manifest.permission.SEND_SMS}, REQUEST_CODE);
+                }
             }
         });
 
-        requestPermissions(PERMISSIONS,REQUEST_CODE);
+        requestPermissions(PERMISSIONS, REQUEST_CODE);
+
 
     }
 

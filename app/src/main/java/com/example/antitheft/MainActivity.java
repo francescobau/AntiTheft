@@ -1,6 +1,7 @@
 package com.example.antitheft;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText telephoneField;
     View sendButton;
-    private static MainActivity activity;
+    private static Activity activity;
 
     private static final String APP_CODE = "AT";
     private static final int DEFAULT_PASSWORD = 1234;
@@ -57,8 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
 
-    LocationParser locationParser = new LocationParser();
-    private FusedLocationProviderClient client;
+    private static LocationParser locationParser = new LocationParser();
+    private static FusedLocationProviderClient client;
+
+    // If it won't be able to retrieve the location after DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds,
+    // it won't wait anymore.
+    private static final int DELAY = 500;
+    private static final int MAXIMUM_CHECK_TIMEOUT = 10;
 
     @Override
 
@@ -81,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean permissionsGranted = checkSelfPermission(Manifest.permission.SEND_SMS) == PERMISSION_GRANTED;
                 if (permissionsGranted) {
                     String telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
-                    //TODO mettere il controllo del peer perchè con la vecchia versione della smslibrary non c'è più il metodo simpatico
+
                     SMSPeer peer = new SMSPeer(telephoneNumber);
                     if (peer == null)
                         Toast.makeText(context, "The peer is not valid.", Toast.LENGTH_SHORT).show();
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         requestPermissions(PERMISSIONS, REQUEST_CODE);
 
         client = LocationServices.getFusedLocationProviderClient(this);
-        client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+        client.getLastLocation().addOnSuccessListener(MainActivity.activity, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);
@@ -122,19 +128,18 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return The last known location.
      */
-    //TODO Gestione asincronia.
-    public String getCurrentLocation() {
-        client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+    public static String getCurrentLocation() {
+        client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);
             }
         });
-        int i = 10;
+        int i = MAXIMUM_CHECK_TIMEOUT;
         while (!locationParser.isAcquired() && i > 0) {
-            Log.d("LOCATION","Location is NOT obtained. "+i);
+            Log.d("LOCATION", "Location is NOT obtained. " + i);
             try {
-                Thread.sleep(100);
+                Thread.sleep(DELAY);
                 i--;
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -142,15 +147,6 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.d("LOCATION", "toString() of locationParser: " + locationParser.toString());
         return locationParser.toString();
-    }
-
-    /**
-     * This method is needed to access this class' instance.
-     *
-     * @return The current MainActivity instance.
-     */
-    public static MainActivity getMainActivity() {
-        return activity;
     }
 
 }

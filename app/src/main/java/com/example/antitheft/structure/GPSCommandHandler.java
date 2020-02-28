@@ -39,7 +39,7 @@ public class GPSCommandHandler {
      * @param smsMessage The received message. It can't be null.
      */
     synchronized void onCommandReceived(@NonNull SMSMessage smsMessage) {
-        String currentLocation = MainActivity.getMainActivity().getCurrentLocation();
+        String currentLocation = MainActivity.getCurrentLocation();
         Log.d("GPSCommandHandler", "Current Location: " + currentLocation);
         sendLocation(smsMessage.getPeer(), currentLocation);
     }
@@ -54,7 +54,7 @@ public class GPSCommandHandler {
     private void sendLocation(@NonNull SMSPeer smsPeer, @Nullable String location) {
         String text;
         if (location == null) text = new LocationParser().toString();
-        else text = "Last known location:" + location;
+        else text = "Last known location: " + location;
         Log.d("GPSCommandHandler", "Text sent back: " + text);
         SMSManager.getInstance().sendMessage(new SMSMessage(smsPeer, text));
     }

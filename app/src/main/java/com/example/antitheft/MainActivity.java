@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
 
-    private LocationParser locationParser = new LocationParser();
+    LocationParser locationParser = new LocationParser();
     private FusedLocationProviderClient client;
 
     @Override
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(context, "The peer is not valid.", Toast.LENGTH_SHORT).show();
                     else sendCommand(new SMSMessage(peer, FULL_DEFAULT_LOCATE_COMMAND));
                 } else {
-                    Toast.makeText(context, "This app needs SEND_SMS permissions in order to send the command via SMS.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "This app needs at least SEND_SMS permissions in order to send the command via SMS.", Toast.LENGTH_SHORT).show();
                     requestPermissions(new String[]{Manifest.permission.SEND_SMS}, REQUEST_CODE);
                 }
             }
@@ -95,6 +95,13 @@ public class MainActivity extends AppCompatActivity {
 
         requestPermissions(PERMISSIONS, REQUEST_CODE);
 
+        client = LocationServices.getFusedLocationProviderClient(this);
+        client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                locationParser.setLocation(location);
+            }
+        });
 
     }
 
@@ -117,32 +124,30 @@ public class MainActivity extends AppCompatActivity {
      */
     //TODO Gestione asincronia.
     public String getCurrentLocation() {
-        client = LocationServices.getFusedLocationProviderClient(this);
         client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);
             }
         });
-        /**
-         int i = 10;
-         while(!locationParser.isAcquired() && i>0){
-         try {
-         Thread.sleep(100);
-         i--;
-         } catch (InterruptedException e) {
-         e.printStackTrace();
-         }
-         }
-         */
+        int i = 10;
+        while (!locationParser.isAcquired() && i > 0) {
+            Log.d("LOCATION","Location is NOT obtained. "+i);
+            try {
+                Thread.sleep(100);
+                i--;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         Log.d("LOCATION", "toString() of locationParser: " + locationParser.toString());
         return locationParser.toString();
     }
 
     /**
-     * //TODO
+     * This method is needed to access this class' instance.
      *
-     * @return
+     * @return The current MainActivity instance.
      */
     public static MainActivity getMainActivity() {
         return activity;

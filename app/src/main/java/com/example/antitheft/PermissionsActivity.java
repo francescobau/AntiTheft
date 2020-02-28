@@ -25,7 +25,7 @@ public class PermissionsActivity extends AppCompatActivity {
      * Necessary permissions: SEND_SMS, RECEIVE_SMS,
      * ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION, ACCESS_BACKGROUND_LOCATION
      */
-    static final String[] permissions = new String[]{
+    static final String[] PERMISSIONS = new String[]{
             Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS,
             Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_BACKGROUND_LOCATION};
@@ -39,10 +39,10 @@ public class PermissionsActivity extends AppCompatActivity {
         permissionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] requiredPermissions = PermissionsHandler.getDeniedPermissions(getApplicationContext(), permissions);
+                String[] requiredPermissions = PermissionsHandler.getDeniedPermissions(getApplicationContext(), PERMISSIONS);
                 //Maybe all the permissions are already granted
                 if (requiredPermissions.length != 0)
-                    requestPermissions(PermissionsHandler.getDeniedPermissions(getApplicationContext(), permissions), PermissionsHandler.REQUEST_CODE);
+                    requestPermissions(PermissionsHandler.getDeniedPermissions(getApplicationContext(), PERMISSIONS), PermissionsHandler.REQUEST_CODE);
                 else {
                     Toast.makeText(getApplicationContext(), getString(R.string.toast_permissions_already_granted), Toast.LENGTH_SHORT).show();
                     changeActivity();

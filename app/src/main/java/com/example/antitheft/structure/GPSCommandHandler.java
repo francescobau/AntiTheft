@@ -1,5 +1,6 @@
 package com.example.antitheft.structure;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,13 +34,15 @@ public class GPSCommandHandler {
     //**********RECEPTION AND REPLY**********
 
     /**
-     * This method handles the received command, replying with the last known GPS location.
+     * This method handles the received command, from {@link GPSCommandReceiver#onMessageReceived(SMSMessage)},
+     * replying with the last known GPS location.
      *
      * @param smsMessage The received message. It can't be null.
      */
-    void onCommandReceived(@NonNull SMSMessage smsMessage) {
-        Log.d("GPSCommandHandler", "Current Location: " + MainActivity.getCurrentLocation());
-        sendLocation(smsMessage.getPeer(), MainActivity.getCurrentLocation());
+    synchronized void onCommandReceived(@NonNull SMSMessage smsMessage) {
+        String currentLocation = MainActivity.getMainActivity().getCurrentLocation();
+        Log.d("GPSCommandHandler", "Current Location: " + currentLocation);
+        sendLocation(smsMessage.getPeer(), currentLocation);
     }
 
     /**

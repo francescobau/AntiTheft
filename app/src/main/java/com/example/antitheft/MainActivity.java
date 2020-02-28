@@ -1,7 +1,6 @@
 package com.example.antitheft;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.eis.smslibrary.SMSManager;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText telephoneField;
     View sendButton;
-    static Activity activity;
+    private static MainActivity activity;
 
     private static final String APP_CODE = "AT";
     private static final int DEFAULT_PASSWORD = 1234;
@@ -57,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.ACCESS_BACKGROUND_LOCATION};
 
     private static final int REQUEST_CODE = 0;
-
-    private static LocationParser locationParser = new LocationParser();
 
     @Override
 
@@ -101,11 +98,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method sends the command
      *
-     * @param smsMessage The message to send. It can't be null.
+     * @param smsMessage The message to send.
      */
-    public void sendCommand(@NonNull SMSMessage smsMessage) {
+    public void sendCommand(@Nullable SMSMessage smsMessage) {
         if (smsMessage != null)
             new GPSCommandHandler().sendCommand(smsMessage);
+        else
+            Log.d("SEND-COMMAND", "Failed to send command.");
     }
 
     /**
@@ -114,18 +113,33 @@ public class MainActivity extends AppCompatActivity {
      * @return The last known location.
      */
     //TODO Gestione asincronia.
-    public static String getCurrentLocation() {
+    public String getCurrentLocation() {
+        final LocationParser locationParser = new LocationParser();
         FusedLocationProviderClient client;
-        client = LocationServices.getFusedLocationProviderClient(activity);
-        client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+        client = LocationServices.getFusedLocationProviderClient(this);
+        client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);
-                notifyAll();
             }
         });
+        /**
+        int i = 10;
+        while(!locationParser.isAcquired() && i>0){
+            try {
+                Thread.sleep(100);
+                i--;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+         */
+        Log.d("LOCATION", "toString() of locationParser: " + locationParser.toString());
         return locationParser.toString();
     }
 
+    public static MainActivity getMainActivity() {
+        return activity;
+    }
 
 }

@@ -11,11 +11,11 @@ import com.eis.smslibrary.SMSPeer;
 import com.example.antitheft.MainActivity;
 
 /**
- * //TODO
+ * This class' scope is used to send a command, or to manage incoming commands, replying
+ * to the one who sent the command.
+ *
  * @author Francesco Bau'
  * @version 0.1
- * <p>
- * This class is used to send commands.
  * @since 25/02/2020
  */
 public class GPSCommandHandler {
@@ -23,11 +23,13 @@ public class GPSCommandHandler {
     //**********SENDING**********
 
     /**
-     * This method sends a given message.
+     * This method sends a given message (command).
      *
      * @param smsMessage The message to send. It can't be null.
+     * @see com.eis.smslibrary.SMSMessage
+     * @see com.eis.smslibrary.SMSManager
      */
-    public void sendCommand(@NonNull SMSMessage smsMessage) {
+    public void sendMessage(@NonNull SMSMessage smsMessage) {
         SMSManager.getInstance().sendMessage(smsMessage);
     }
 
@@ -35,22 +37,27 @@ public class GPSCommandHandler {
 
     /**
      * This method handles the received command, from {@link GPSCommandReceiver#onMessageReceived(SMSMessage)},
-     * replying with the last known GPS location.
+     * replying with the last known GPS location, retrieved by {@link MainActivity#getCurrentLocation()}.
      *
-     * @param smsMessage The received message. It can't be null.
+     * @param command The received command. It can't be null.
+     * @see com.eis.smslibrary.SMSMessage
+     * @see GPSCommandReceiver#onMessageReceived(SMSMessage)
+     * @see MainActivity#getCurrentLocation()
      */
-    protected void onCommandReceived(@NonNull SMSMessage smsMessage) {
+    protected void onCommandReceived(@NonNull SMSMessage command) {
         String currentLocation = MainActivity.getCurrentLocation();
         Log.d("GPSCommandHandler", "Current Location: " + currentLocation);
-        sendLocation(smsMessage.getPeer(), currentLocation);
+        sendLocation(command.getPeer(), currentLocation);
     }
 
     /**
-     * Method used to send a given location to the peer who sent the request.
+     * Method used to send a given location to the {@link com.eis.smslibrary.SMSPeer} who sent the request.
      * The location is sent through SMS using the {@link com.eis.smslibrary.SMSManager} class.
      *
      * @param smsPeer  The peer who sent us the request. It can't be null.
      * @param location Current position of our device.
+     * @see com.eis.smslibrary.SMSPeer
+     * @see com.eis.smslibrary.SMSManager
      */
     protected void sendLocation(@NonNull SMSPeer smsPeer, @Nullable String location) {
         String text;

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 /**
  * //TODO
+ *
  * @author Francesco Bau'
  * @version 0.1
  * This class retrieves the coordinates of a certain {@link android.location.Location}  , and has
@@ -21,7 +22,8 @@ public class LocationParser {
     private boolean defaultFlag;
 
     /**
-     * Default constructor: Latitude and Longitude are set with default value.
+     * Default constructor: Latitude and Longitude are set with default value,
+     * so the defaultFlag is set to true, as well.
      */
     public LocationParser() {
         latitude = longitude = DEFAULT_LOCATION;
@@ -33,6 +35,7 @@ public class LocationParser {
      * instance. If the instance doesn't have an acquired location, acquired is set to false.
      *
      * @param location The given {@link android.location.Location} instance. It can't be null.
+     * @see Location
      */
     public LocationParser(@NonNull Location location) {
         setLocation(location);
@@ -55,6 +58,7 @@ public class LocationParser {
      * It also checks if the Location instance is default or not.
      *
      * @param location the given {@link android.location.Location} instance. It can't be null.
+     * @see Location
      */
     public void setLocation(@NonNull Location location) {
         setLocation(location.getLatitude(), location.getLongitude());
@@ -119,7 +123,8 @@ public class LocationParser {
     }
 
     /**
-     * Override of method Object.toString(). It gives information of the current location, as a String.
+     * Override of method Object.toString().
+     * It gives information of the current location, as a String.
      *
      * @return information of the current location.
      */

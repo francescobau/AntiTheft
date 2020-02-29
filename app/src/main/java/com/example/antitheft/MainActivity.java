@@ -26,12 +26,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
- * //TODO
- * @author Francesco Bau'
- * @version 0.1
- * <p>
  * Main Activity. It takes UI commands as input, and, as an output, it gives them a certain action.
  * Its current scope is just to send SMS, based by what does the User decide to do.
+ *
+ * @author Francesco Bau'
+ * @version 0.1
  * @since 24/02/2020
  */
 public class MainActivity extends AppCompatActivity {
@@ -39,9 +38,13 @@ public class MainActivity extends AppCompatActivity {
     EditText telephoneField;
     View sendButton;
 
-    // Context instance is not enough, it needs an Activity instance.
-    // It's static because it's used on a static method.
-    // That method is static because GPSCommandHandler needs that method, as well.
+    /**
+     * Context instance is not enough, it needs an Activity instance.
+     * It's static because it's used on a static method.
+     * That method is static because GPSCommandHandler needs that method, as well.
+     *
+     * @see this#sendCommand(SMSMessage)
+     */
     private static Activity activity;
 
     private static final String APP_CODE = "AT";
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Setting the listener
         SMSManager.getInstance().setReceivedListener(GPSCommandReceiver.class, context);
-        Log.d("MainActivity", "Listener set");
+
         telephoneField = findViewById(R.id.telephoneNumber);
         sendButton = findViewById(R.id.sendButton);
         activity = this;
@@ -92,22 +95,27 @@ public class MainActivity extends AppCompatActivity {
                 boolean permissionsGranted = checkSelfPermission(Manifest.permission.SEND_SMS) == PERMISSION_GRANTED;
                 if (permissionsGranted) {
                     String telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
-
+                    // Checking the peer.
                     SMSPeer peer = new SMSPeer(telephoneNumber);
                     if (peer == null)
-                        Toast.makeText(context, "The peer is not valid.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.toast_non_valid_peer, Toast.LENGTH_SHORT).show();
+                        // If peer is not null, it sends the command.
                     else sendCommand(new SMSMessage(peer, FULL_DEFAULT_LOCATE_COMMAND));
                 } else {
-                    Toast.makeText(context, "This app needs at least SEND_SMS permissions in order to send the command via SMS.", Toast.LENGTH_SHORT).show();
+                    // If SMS permissions are not granted, it will show a toast, because
+                    // the app can't send commands without that permission.
+                    Toast.makeText(context, R.string.toast_app_needs_SMS_permissions, Toast.LENGTH_SHORT).show();
                     requestPermissions(new String[]{Manifest.permission.SEND_SMS}, REQUEST_CODE);
                 }
             }
         });
-
+        // Request permissions.
         requestPermissions(PERMISSIONS, REQUEST_CODE);
 
+        // Immediately prepare the last known location.
         client = LocationServices.getFusedLocationProviderClient(this);
-        client.getLastLocation().addOnSuccessListener(MainActivity.activity, new OnSuccessListener<Location>() {
+        // Callback to retrieve the last known location.
+        client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);
@@ -117,23 +125,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * This method sends the command
+     * This method sends the command, calling the method in {@link GPSCommandHandler} class, if
+     * command is not null.
      *
      * @param smsMessage The message to send.
+     * @see com.eis.smslibrary.SMSMessage
+     * @see GPSCommandHandler
+     * @see GPSCommandHandler#sendMessage(SMSMessage)
      */
-    public void sendCommand(@Nullable SMSMessage smsMessage) {
+    private void sendCommand(@Nullable SMSMessage smsMessage) {
         if (smsMessage != null)
-            new GPSCommandHandler().sendCommand(smsMessage);
+            new GPSCommandHandler().sendMessage(smsMessage);
         else
             Log.d("SEND-COMMAND", "Failed to send command.");
     }
 
     /**
-     * This method retrieves the last known location.
+     * This method retrieves the last known {@link Location}, parsed as String.
      *
      * @return The last known location.
+     * @see Location
+     * @see LocationParser
+     * @see LocationParser#toString()
      */
     public static String getCurrentLocation() {
+        String locationTag = "LOCATION";
+        // Callback to retrieve the last known location.
         client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -141,9 +158,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         int i = 0;
-        // Waits for the listener, until DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds.
+        // Waits for the callback, until DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds.
         while (locationParser.isDefault() && i < MAXIMUM_CHECK_TIMEOUT) {
-            Log.d("LOCATION", "Location is NOT obtained. " + i);
+            Log.d(locationTag, "Location is NOT obtained. " + i);
             try {
                 Thread.sleep(DELAY);
                 i++;
@@ -151,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        Log.d("LOCATION", "toString() of locationParser: " + locationParser.toString());
+        Log.d(locationTag, "toString() of locationParser: " + locationParser.toString());
         return locationParser.toString();
     }
 

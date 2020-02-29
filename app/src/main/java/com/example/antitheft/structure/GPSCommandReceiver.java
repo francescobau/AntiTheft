@@ -10,11 +10,11 @@ import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
 import com.example.antitheft.MainActivity;
 
 /**
- * //TODO
+ * This class captures all incoming messages.
+ *
  * @author Francesco Bau'
  * @version 0.1
  * <p>
- * This class captures all incoming messages.
  * @since 25/02/2020
  */
 public class GPSCommandReceiver extends SMSReceivedServiceListener {
@@ -24,6 +24,9 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      * command or not.
      *
      * @param message The incoming message.
+     * @see com.eis.smslibrary.SMSMessage
+     * @see GPSCommandHandler
+     * @see GPSCommandHandler#onCommandReceived(SMSMessage)
      */
     @Override
     public void onMessageReceived(@Nullable SMSMessage message) {
@@ -39,6 +42,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      *
      * @param smsMessage The message to check. It can't be null.
      * @return true if message is a command, false otherwise.
+     * @see com.eis.smslibrary.SMSMessage
      */
     private boolean isValidCommand(@NonNull SMSMessage smsMessage) {
         boolean flag = smsMessage.getData().contains(MainActivity.FULL_DEFAULT_LOCATE_COMMAND);

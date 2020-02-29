@@ -12,4 +12,7 @@
     <string name="location_permission_explanation">This app needs to access your location, in order to make you able to retrieve this phone\'s location when you lose it.</string>
 
     <string name="give_permissions_button_text">OK, understood!</string>
+
+    <string name="toast_non_valid_peer">The peer is not valid.</string>
+    <string name="toast_app_needs_SMS_permissions">This app needs at least SEND_SMS permissions in order to send the command via SMS.</string>
 </resources>

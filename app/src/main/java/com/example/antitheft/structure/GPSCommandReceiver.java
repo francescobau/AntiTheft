@@ -26,7 +26,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      */
     @Override
     public void onMessageReceived(@Nullable SMSMessage message) {
-        if(message==null) return;
+        if (message == null) return;
         Log.d("GPSCommandReceiver", "Message received: " + message);
         if (!isValidCommand(message)) return;
         Log.d("GPSCommandReceiver", "Message received is a valid command");

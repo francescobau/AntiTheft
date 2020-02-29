@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String FULL_DEFAULT_LOCATE_COMMAND = APP_CODE + "-" + DEFAULT_PASSWORD + " " + LOCATE_COMMAND;
 
     /**
-     * Necessary permissions: SEND_SMS, RECEIVE_SMS,
+     * Necessary permissions: SEND_SMS, RECEIVE_SMS, WAKE_LOCK,
      * ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION, ACCESS_BACKGROUND_LOCATION
      */
     static final String[] PERMISSIONS = new String[]{

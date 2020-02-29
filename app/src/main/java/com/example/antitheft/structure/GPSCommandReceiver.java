@@ -3,6 +3,7 @@ package com.example.antitheft.structure;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
@@ -24,7 +25,8 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      * @param message The incoming message.
      */
     @Override
-    public void onMessageReceived(SMSMessage message) {
+    public void onMessageReceived(@Nullable SMSMessage message) {
+        if(message==null) return;
         Log.d("GPSCommandReceiver", "Message received: " + message);
         if (!isValidCommand(message)) return;
         Log.d("GPSCommandReceiver", "Message received is a valid command");

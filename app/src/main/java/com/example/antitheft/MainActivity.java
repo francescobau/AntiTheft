@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
+ * //TODO
  * @author Francesco Bau'
  * @version 0.1
  * <p>

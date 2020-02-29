@@ -5,6 +5,7 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 
 /**
+ * //TODO
  * @author Francesco Bau'
  * @version 0.1
  * This class retrieves the coordinates of a certain {@link android.location.Location}  , and has
@@ -20,7 +21,7 @@ public class LocationParser {
     private boolean defaultFlag;
 
     /**
-     * Default constructor: Latitude and Longitude are setted with default value, so it's not acquired.
+     * Default constructor: Latitude and Longitude are set with default value.
      */
     public LocationParser() {
         latitude = longitude = DEFAULT_LOCATION;
@@ -28,17 +29,7 @@ public class LocationParser {
     }
 
     /**
-     * Main constructor. It sets the fields, given Latitude and Longitude.
-     *
-     * @param latitude  The given latitude.
-     * @param longitude The given longitude.
-     */
-    public LocationParser(double latitude, double longitude) {
-        setLocation(latitude, longitude);
-    }
-
-    /**
-     * Alternative constructor. It extracts Latitude and Longitude from the {@link android.location.Location}
+     * Main constructor. It extracts Latitude and Longitude from the {@link android.location.Location}
      * instance. If the instance doesn't have an acquired location, acquired is set to false.
      *
      * @param location The given {@link android.location.Location} instance. It can't be null.
@@ -48,13 +39,12 @@ public class LocationParser {
     }
 
     /**
-     * The core of this class. It acquires latitude and longitude, and, after acquiring these
-     * parameters, it sets acquired flag to true.
+     * The core of this class. It acquires latitude and longitude.
      *
      * @param latitude  The given latitude.
      * @param longitude The given longitude.
      */
-    public void setLocation(double latitude, double longitude) {
+    private void setLocation(double latitude, double longitude) {
         setLatitude(latitude);
         setLongitude(longitude);
         setDefaultFlag(false);
@@ -68,7 +58,7 @@ public class LocationParser {
      */
     public void setLocation(@NonNull Location location) {
         setLocation(location.getLatitude(), location.getLongitude());
-        // Check if location is with default values.
+        // Check if location has default values.
         if (location.getLatitude() == new Location(DEFAULT_PROVIDER).getLatitude() &&
                 location.getLongitude() == new Location(DEFAULT_PROVIDER).getLongitude() &&
                 !location.hasAccuracy()) setDefaultFlag(true);

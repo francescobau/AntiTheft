@@ -1,7 +1,5 @@
 package com.example.antitheft.structure;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -46,7 +44,6 @@ public class GPSCommandHandler {
      */
     protected void onCommandReceived(@NonNull SMSMessage command) {
         String currentLocation = MainActivity.getCurrentLocation();
-        Log.d("GPSCommandHandler", "Current Location: " + currentLocation);
         sendLocation(command.getPeer(), currentLocation);
     }
 
@@ -63,7 +60,6 @@ public class GPSCommandHandler {
         String text;
         if (location == null) text = new LocationParser().toString();
         else text = "Last known location: " + location;
-        Log.d("GPSCommandHandler", "Text sent back: " + text);
         SMSManager.getInstance().sendMessage(new SMSMessage(smsPeer, text));
     }
 

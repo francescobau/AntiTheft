@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         if (smsMessage != null)
             new GPSCommandHandler().sendMessage(smsMessage);
         else
-            Log.d("SEND-COMMAND", "Failed to send command.");
+            Toast.makeText(this, R.string.sendCommand_fail, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         // Waits for the callback, until DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds.
         while (locationParser.isDefault() && i < MAXIMUM_CHECK_TIMEOUT) {
-            Log.d(locationTag, "Location is NOT obtained. " + i);
+            // Location is NOT obtained.
             try {
                 Thread.sleep(DELAY);
                 i++;
@@ -168,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        Log.d(locationTag, "toString() of locationParser: " + locationParser.toString());
         return locationParser.toString();
     }
 

@@ -38,20 +38,20 @@ public class GPSCommandHandler {
      *
      * @param smsMessage The received message. It can't be null.
      */
-    synchronized void onCommandReceived(@NonNull SMSMessage smsMessage) {
+    protected void onCommandReceived(@NonNull SMSMessage smsMessage) {
         String currentLocation = MainActivity.getCurrentLocation();
         Log.d("GPSCommandHandler", "Current Location: " + currentLocation);
         sendLocation(smsMessage.getPeer(), currentLocation);
     }
 
     /**
-     * Method used to send our location to the peer who sent us the request.
+     * Method used to send a given location to the peer who sent the request.
      * The location is sent through SMS using the {@link com.eis.smslibrary.SMSManager} class.
      *
      * @param smsPeer  The peer who sent us the request. It can't be null.
      * @param location Current position of our device.
      */
-    private void sendLocation(@NonNull SMSPeer smsPeer, @Nullable String location) {
+    protected void sendLocation(@NonNull SMSPeer smsPeer, @Nullable String location) {
         String text;
         if (location == null) text = new LocationParser().toString();
         else text = "Last known location: " + location;

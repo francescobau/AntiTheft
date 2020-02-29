@@ -17,14 +17,14 @@ public class LocationParser {
     static final String DEFAULT_PROVIDER = "Default";
 
     private double latitude, longitude;
-    private boolean acquired;
+    private boolean defaultFlag;
 
     /**
      * Default constructor: Latitude and Longitude are setted with default value, so it's not acquired.
      */
     public LocationParser() {
         latitude = longitude = DEFAULT_LOCATION;
-        setAcquired(false);
+        setDefaultFlag(true);
     }
 
     /**
@@ -57,7 +57,7 @@ public class LocationParser {
     public void setLocation(double latitude, double longitude) {
         setLatitude(latitude);
         setLongitude(longitude);
-        setAcquired(true);
+        setDefaultFlag(false);
     }
 
     /**
@@ -68,11 +68,10 @@ public class LocationParser {
      */
     public void setLocation(@NonNull Location location) {
         setLocation(location.getLatitude(), location.getLongitude());
-        // Check if location is acquired or not. Location with default values and without Accuracy means
-        // it's not acquired, but with default values, instead.
+        // Check if location is with default values.
         if (location.getLatitude() == new Location(DEFAULT_PROVIDER).getLatitude() &&
                 location.getLongitude() == new Location(DEFAULT_PROVIDER).getLongitude() &&
-                !location.hasAccuracy()) setAcquired(false);
+                !location.hasAccuracy()) setDefaultFlag(true);
     }
 
     /**
@@ -96,10 +95,10 @@ public class LocationParser {
     /**
      * Method to set the acquired flag.
      *
-     * @param acquired Tells if a valid location is acquired (true), or not (false).
+     * @param defaultFlag Tells if a valid location is acquired (true), or not (false).
      */
-    private void setAcquired(boolean acquired) {
-        this.acquired = acquired;
+    private void setDefaultFlag(boolean defaultFlag) {
+        this.defaultFlag = defaultFlag;
     }
 
     /**
@@ -125,8 +124,8 @@ public class LocationParser {
      *
      * @return true if acquired, false otherwise.
      */
-    public boolean isAcquired() {
-        return this.acquired;
+    public boolean isDefault() {
+        return this.defaultFlag;
     }
 
     /**
@@ -135,7 +134,7 @@ public class LocationParser {
      * @return information of the current location.
      */
     public String toString() {
-        if (!isAcquired())
+        if (isDefault())
             return UNKNOWN_LOCATION_MESSAGE;
         return "Latitude: " + getLatitude() + " Longitude: " + getLongitude();
 

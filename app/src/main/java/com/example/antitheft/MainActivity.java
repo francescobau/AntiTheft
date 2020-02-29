@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     EditText telephoneField;
     View sendButton;
+
+    // Context instance is not enough, it needs an Activity instance.
+    // It's static because it's used on a static method.
+    // That method is static because GPSCommandHandler needs that method, as well.
     private static Activity activity;
 
     private static final String APP_CODE = "AT";
@@ -135,12 +139,13 @@ public class MainActivity extends AppCompatActivity {
                 locationParser.setLocation(location);
             }
         });
-        int i = MAXIMUM_CHECK_TIMEOUT;
-        while (!locationParser.isAcquired() && i > 0) {
+        int i = 0;
+        // Waits for the listener, until DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds.
+        while (locationParser.isDefault() && i < MAXIMUM_CHECK_TIMEOUT) {
             Log.d("LOCATION", "Location is NOT obtained. " + i);
             try {
                 Thread.sleep(DELAY);
-                i--;
+                i++;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

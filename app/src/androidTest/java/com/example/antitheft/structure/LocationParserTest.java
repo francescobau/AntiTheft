@@ -39,15 +39,14 @@ public class LocationParserTest {
      * locationParser = mock(LocationParser.class);
      * when(locationParser.getLatitude()).thenReturn(expectedLatitude);
      * when(locationParser.getLongitude()).thenReturn(expectedLongitude);
-     * when(locationParser.isAcquired()).thenReturn(expectedAcquired);
+     * when(locationParser.isAcquired()).thenReturn(expectedDefault);
      * }
      */
     @Test
     public void testAcquiredA() {
         LocationParser locationParser = new LocationParser(expectedLatitude, expectedLongitude);
-        locationParser.isAcquired();
         // Inserting data manually, with just latitude and longitude, is considered acquired.
-        assertEquals(true, locationParser.isAcquired());
+        assertEquals(false, locationParser.isDefault());
     }
 
     @Test
@@ -56,14 +55,14 @@ public class LocationParserTest {
         location.setLatitude(expectedLatitude);
         location.setLongitude(expectedLongitude);
         LocationParser locationParser = new LocationParser(location);
-        assertEquals(true, locationParser.isAcquired());
+        assertEquals(false, locationParser.isDefault());
     }
 
     @Test
-    public void testDefaultLocation() {
+    public void testDefault() {
         Location location = new Location(LocationParser.DEFAULT_PROVIDER);
         LocationParser locationParser = new LocationParser(location);
-        assertEquals(false, locationParser.isAcquired());
+        assertEquals(true, locationParser.isDefault());
     }
 
     @Test(expected = NullPointerException.class)

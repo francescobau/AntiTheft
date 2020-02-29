@@ -8,11 +8,13 @@ import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
 import com.example.antitheft.MainActivity;
 
 /**
- * This class captures all incoming messages.
+ * This class captures all incoming messages. It extends abstract class
+ * {@link com.eis.smslibrary.listeners.SMSReceivedServiceListener}.
  *
  * @author Francesco Bau'
  * @version 0.1
  * @since 25/02/2020
+ * @see com.eis.smslibrary.listeners.SMSReceivedServiceListener
  */
 public class GPSCommandReceiver extends SMSReceivedServiceListener {
 

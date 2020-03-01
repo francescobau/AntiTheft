@@ -21,6 +21,8 @@ public class GPSCommandReceiverTest {
     private SMSMessage smsMessage;
     private SMSPeer smsPeer;
 
+    private GPSCommandReceiver receiver;
+
     /**
      * Initialization of the fields, before testing.
      *
@@ -31,6 +33,7 @@ public class GPSCommandReceiverTest {
     public void init() {
         smsPeer = new SMSPeer(VALID_TELEPHONE_NUMBER);
         smsMessage = new SMSMessage(smsPeer, TEXT_MESSAGE);
+        receiver = new GPSCommandReceiver();
     }
 
     /**
@@ -44,7 +47,7 @@ public class GPSCommandReceiverTest {
      */
     @Test
     public void onNullMessageReceived() {
-        new GPSCommandReceiver().onMessageReceived(null);
+        receiver.onMessageReceived(null);
     }
 
     /**
@@ -55,7 +58,7 @@ public class GPSCommandReceiverTest {
      */
     @Test
     public void onMessageReceived() {
-        new GPSCommandReceiver().onMessageReceived(smsMessage);
+        receiver.onMessageReceived(smsMessage);
     }
 
     /**
@@ -68,6 +71,6 @@ public class GPSCommandReceiverTest {
     @Test
     public void onValidLocateCommandReceived() {
         SMSMessage message = new SMSMessage(smsPeer, FULL_DEFAULT_LOCATE_COMMAND);
-        new GPSCommandReceiver().onMessageReceived(message);
+        receiver.onMessageReceived(message);
     }
 }

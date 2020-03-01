@@ -15,6 +15,8 @@ public class GPSCommandHandlerTest {
     private SMSMessage smsMessage;
     private SMSPeer smsPeer;
 
+    private GPSCommandHandler handler;
+
     static final String LOCATION = "";
     // WARNING: insert a VALIID telephoneNumber, because it sends an SMS to that telephone number.
     static final String VALID_TELEPHONE_NUMBER = "+393515186755";
@@ -31,6 +33,7 @@ public class GPSCommandHandlerTest {
     public void init() {
         smsPeer = new SMSPeer(VALID_TELEPHONE_NUMBER);
         smsMessage = new SMSMessage(smsPeer, TEXT_MESSAGE);
+        handler = new GPSCommandHandler();
     }
 
     /**
@@ -44,7 +47,7 @@ public class GPSCommandHandlerTest {
      */
     @Test(expected = NullPointerException.class)
     public void sendNullMessage() {
-        new GPSCommandHandler().sendMessage(null);
+        handler.sendMessage(null);
     }
 
     /**
@@ -59,7 +62,7 @@ public class GPSCommandHandlerTest {
      */
     @Test(expected = NullPointerException.class)
     public void onNullCommandReceived() {
-        new GPSCommandHandler().onCommandReceived(null);
+        handler.onCommandReceived(null);
     }
 
     /**
@@ -74,7 +77,7 @@ public class GPSCommandHandlerTest {
      */
     @Test(expected = NullPointerException.class)
     public void sendLocationToNullPeer() {
-        new GPSCommandHandler().sendLocation(null, LOCATION);
+        handler.sendLocation(null, LOCATION);
     }
 
     /**
@@ -86,7 +89,7 @@ public class GPSCommandHandlerTest {
      */
     @Test
     public void onCommandReceived() {
-        new GPSCommandHandler().onCommandReceived(smsMessage);
+        handler.onCommandReceived(smsMessage);
     }
 
     /**
@@ -97,7 +100,7 @@ public class GPSCommandHandlerTest {
      */
     @Test
     public void sendLocation() {
-        new GPSCommandHandler().sendLocation(smsPeer, LOCATION);
+        handler.sendLocation(smsPeer, LOCATION);
     }
 
 }

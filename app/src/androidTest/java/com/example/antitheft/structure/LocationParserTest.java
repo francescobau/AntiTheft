@@ -5,7 +5,8 @@ import android.location.Location;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test of {@link LocationParser} class.
@@ -45,7 +46,7 @@ public class LocationParserTest {
      */
     @Test
     public void testLatitude() {
-        assertEquals(true, expectedLatitude == locationParser.getLatitude());
+        assertTrue(expectedLatitude == locationParser.getLatitude());
     }
 
     /**
@@ -56,7 +57,7 @@ public class LocationParserTest {
      */
     @Test
     public void testLongitude() {
-        assertEquals(true, expectedLongitude == locationParser.getLongitude());
+        assertTrue(expectedLongitude == locationParser.getLongitude());
     }
 
     /**
@@ -75,7 +76,8 @@ public class LocationParserTest {
         Location location = new Location(LocationParser.DEFAULT_PROVIDER);
         location.setLatitude(expectedLatitude);
         parser.setLocation(location);
-        assertEquals(true, expectedLatitude == parser.getLatitude());
+
+        assertTrue(expectedLatitude == parser.getLatitude());
     }
 
     /**
@@ -94,7 +96,8 @@ public class LocationParserTest {
         Location location = new Location(LocationParser.DEFAULT_PROVIDER);
         location.setLongitude(expectedLongitude);
         parser.setLocation(location);
-        assertEquals(true, expectedLongitude == parser.getLongitude());
+
+        assertTrue(expectedLongitude == parser.getLongitude());
     }
 
     /**
@@ -120,7 +123,8 @@ public class LocationParserTest {
         // Supposing that we are actually there...
         location.setAccuracy(NOT_DEFAULT_ACCURACY);
         LocationParser parser = new LocationParser(location);
-        assertEquals(false, parser.isDefault());
+
+        assertFalse(parser.isDefault());
     }
 
     /**
@@ -137,7 +141,8 @@ public class LocationParserTest {
     public void testDefault() {
         Location location = new Location(LocationParser.DEFAULT_PROVIDER);
         LocationParser parser = new LocationParser(location);
-        assertEquals(true, parser.isDefault());
+
+        assertTrue(parser.isDefault());
     }
 
     /**
@@ -160,7 +165,8 @@ public class LocationParserTest {
         location.setLongitude(new Location(LocationParser.DEFAULT_PROVIDER).getLongitude());
 
         LocationParser parser = new LocationParser(location);
-        assertEquals(true, parser.isDefault());
+
+        assertTrue(parser.isDefault());
     }
 
     /**

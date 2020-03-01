@@ -1,7 +1,6 @@
 package com.example.antitheft;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -37,15 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     EditText telephoneField;
     View sendButton;
-
-    /**
-     * Context instance is not enough, it needs an Activity instance.
-     * It's static because it's used on a static method.
-     * That method is static because GPSCommandHandler needs that method, as well.
-     *
-     * @see this#sendCommand(SMSMessage)
-     */
-    private static Activity activity;
 
     private static final String APP_CODE = "AT";
     private static final int DEFAULT_PASSWORD = 1234;
@@ -94,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         telephoneField = findViewById(R.id.telephoneNumber);
         sendButton = findViewById(R.id.sendButton);
-        activity = this;
+        //activity = this;
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,10 +127,10 @@ public class MainActivity extends AppCompatActivity {
         /**
          * Callback to retrieve the last known location.
          * @see FusedLocationProviderClient#getLastLocation() to see how the last location is obtained.
-         * @see com.google.android.gms.tasks.Task#addOnSuccessListener(Activity, OnSuccessListener)
+         * @see com.google.android.gms.tasks.Task#addOnSuccessListener(OnSuccessListener)
          * to see more info about the used listener.
          */
-        client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+        client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);
@@ -167,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method retrieves the last known {@link Location}, parsed as String.
+     * It's static because {@link GPSCommandHandler} needs this method, as well.
      *
      * @return The last known location.
      * @see Location
@@ -175,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public static String getCurrentLocation() {
         // Callback to retrieve the last known location.
-        client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+        client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 locationParser.setLocation(location);

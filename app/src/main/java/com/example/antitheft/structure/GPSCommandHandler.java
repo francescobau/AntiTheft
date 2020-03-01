@@ -58,7 +58,8 @@ public class GPSCommandHandler {
      */
     protected void sendLocation(@NonNull SMSPeer smsPeer, @Nullable String location) {
         String text;
-        if (location == null) text = new LocationParser().toString();
+        if (location == null)
+            text = new LocationParser().toString();
         else text = "Last known location: " + location;
         SMSManager.getInstance().sendMessage(new SMSMessage(smsPeer, text));
     }

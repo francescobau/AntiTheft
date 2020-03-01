@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.eis.smslibrary.SMSManager;
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
+import com.eis.smslibrary.exceptions.InvalidTelephoneNumberException;
 import com.example.antitheft.structure.GPSCommandHandler;
 import com.example.antitheft.structure.GPSCommandReceiver;
 import com.example.antitheft.structure.LocationParser;
@@ -67,10 +67,17 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 0;
 
     private static LocationParser locationParser = new LocationParser();
+    /**
+     * The client used to retrieve the last known {@link Location}.
+     *
+     * @see FusedLocationProviderClient for more info.
+     */
     private static FusedLocationProviderClient client;
 
-    // If it won't be able to retrieve the location after DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds,
-    // it won't wait anymore.
+    /**
+     * If it won't be able to retrieve the location after DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds,
+     * it won't wait anymore.
+     */
     private static final int DELAY = 500;
     private static final int MAXIMUM_CHECK_TIMEOUT = 10;
 
@@ -93,20 +100,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean permissionsGranted = checkSelfPermission(Manifest.permission.SEND_SMS) == PERMISSION_GRANTED;
-                if (permissionsGranted) {
-                    String telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
-                    // Checking the peer.
-                    SMSPeer peer = new SMSPeer(telephoneNumber);
-                    if (peer == null)
-                        Toast.makeText(context, R.string.toast_non_valid_peer, Toast.LENGTH_SHORT).show();
-                        // If peer is not null, it sends the command.
-                    else sendCommand(new SMSMessage(peer, FULL_DEFAULT_LOCATE_COMMAND));
-                } else {
+                if (!permissionsGranted) {
                     // If SMS permissions are not granted, it will show a toast, because
                     // the app can't send commands without that permission.
                     Toast.makeText(context, R.string.toast_app_needs_SMS_permissions, Toast.LENGTH_SHORT).show();
                     requestPermissions(new String[]{Manifest.permission.SEND_SMS}, REQUEST_CODE);
+                    return;
                 }
+                // This block will be executed only if SMS permissions are granted.
+                String telephoneNumber = ((EditText) findViewById(R.id.telephoneNumber)).getText().toString();
+                // Checking the peer.
+                if (telephoneNumber == null || telephoneNumber.isEmpty()) {
+                    Toast.makeText(context, R.string.empty_telephone_number, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                SMSPeer peer;
+                // Check if the telephoneNumber is a valid telephone number or not.
+                try {
+                    peer = new SMSPeer(telephoneNumber);
+                } catch (InvalidTelephoneNumberException e) {
+                    Toast.makeText(context, R.string.invalid_telephone_number, Toast.LENGTH_SHORT).show();
+                    return;
+                } catch (NullPointerException e1) {
+                    Toast.makeText(context, R.string.toast_non_valid_peer, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // If everything is OK, it sends the command.
+                sendCommand(new SMSMessage(peer, FULL_DEFAULT_LOCATE_COMMAND));
             }
         });
         // Request permissions.
@@ -114,7 +134,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Immediately prepare the last known location.
         client = LocationServices.getFusedLocationProviderClient(this);
-        // Callback to retrieve the last known location.
+        /**
+         * Callback to retrieve the last known location.
+         * @see FusedLocationProviderClient#getLastLocation() to see how the last location is obtained.
+         * @see com.google.android.gms.tasks.Task#addOnSuccessListener(Activity, OnSuccessListener)
+         * to see more info about the used listener.
+         */
         client.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
@@ -149,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
      * @see LocationParser#toString()
      */
     public static String getCurrentLocation() {
-        String locationTag = "LOCATION";
         // Callback to retrieve the last known location.
         client.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
             @Override

@@ -13,14 +13,14 @@ import com.example.antitheft.MainActivity;
  *
  * @author Francesco Bau'
  * @version 0.1
- * @since 25/02/2020
  * @see com.eis.smslibrary.listeners.SMSReceivedServiceListener
+ * @since 25/02/2020
  */
 public class GPSCommandReceiver extends SMSReceivedServiceListener {
 
     /**
-     * Listener, needed to obtain incoming messages, and to check if they need to be handled as
-     * command or not.
+     * Listener, needed to obtain all incoming messages, and to check if they need to be handled as
+     * commands or not.
      *
      * @param message The incoming message.
      * @see com.eis.smslibrary.SMSMessage
@@ -40,6 +40,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      * @param smsMessage The message to check. It can't be null.
      * @return true if message is a command, false otherwise.
      * @see com.eis.smslibrary.SMSMessage
+     * @see com.eis.smslibrary.SMSMessage#getData()
      */
     private boolean isValidCommand(@NonNull SMSMessage smsMessage) {
         boolean flag = smsMessage.getData().contains(MainActivity.FULL_DEFAULT_LOCATE_COMMAND);

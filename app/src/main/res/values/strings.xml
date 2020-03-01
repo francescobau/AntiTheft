@@ -16,4 +16,6 @@
     <string name="toast_non_valid_peer">The peer is not valid.</string>
     <string name="toast_app_needs_SMS_permissions">This app needs at least SEND_SMS permissions in order to send the command via SMS.</string>
     <string name="sendCommand_fail">Failed to send command.</string>
+    <string name="empty_telephone_number">Please insert a telephone number, before pressing the button.</string>
+    <string name="invalid_telephone_number">The telephone number you inserted is not valid. Please try again with a valid number.</string>
 </resources>

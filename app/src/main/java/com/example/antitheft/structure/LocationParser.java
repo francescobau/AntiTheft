@@ -14,24 +14,26 @@ import androidx.annotation.NonNull;
  */
 public class LocationParser {
     private static final String UNKNOWN_LOCATION_MESSAGE = "Location is NOT acquired.";
-    protected static final double DEFAULT_LOCATION = 0;
     static final String DEFAULT_PROVIDER = "Default";
 
     private double latitude, longitude;
+    // If position is set with default values, defaultFlag returns true, it returns false otherwise.
     private boolean defaultFlag;
 
     /**
-     * Default constructor: Latitude and Longitude are set with default value,
+     * Default constructor: latitude and longitude are set with default values,
      * so the defaultFlag is set to true, as well.
      */
     public LocationParser() {
-        latitude = longitude = DEFAULT_LOCATION;
+        Location location = new Location(DEFAULT_PROVIDER);
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
         setDefaultFlag(true);
     }
 
     /**
      * Main constructor. It extracts Latitude and Longitude from the {@link android.location.Location}
-     * instance. If the instance doesn't have an acquired location, acquired is set to false.
+     * instance. If the instance has default values, defaultFlag is set to true.
      *
      * @param location The given {@link android.location.Location} instance. It can't be null.
      * @see Location
@@ -54,7 +56,8 @@ public class LocationParser {
 
     /**
      * Overload of method setLocation(double,double).
-     * It also checks if the Location instance is default or not.
+     * It also checks if the {@link Location} instance is default or not, setting defaultFlag to true
+     * if the instance has default values.
      *
      * @param location the given {@link android.location.Location} instance. It can't be null.
      * @see Location

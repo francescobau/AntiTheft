@@ -2,7 +2,6 @@ package com.example.antitheft;
 
 import android.Manifest;
 import android.content.Context;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,10 +16,7 @@ import com.eis.smslibrary.SMSPeer;
 import com.eis.smslibrary.exceptions.InvalidTelephoneNumberException;
 import com.example.antitheft.structure.GPSCommandHandler;
 import com.example.antitheft.structure.GPSCommandReceiver;
-import com.example.antitheft.structure.LocationParser;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.antitheft.structure.GPSLocationManager;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -29,7 +25,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * Its current scope is just to send SMS, based by what does the User decide to do.
  *
  * @author Francesco Bau'
- * @version 0.1
+ * @version 1.0
  * @since 24/02/2020
  */
 public class MainActivity extends AppCompatActivity {
@@ -56,20 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
 
-    private static LocationParser locationParser = new LocationParser();
-    /**
-     * The client used to retrieve the last known {@link Location}.
-     *
-     * @see FusedLocationProviderClient for more info.
-     */
-    private static FusedLocationProviderClient client;
-
-    /**
-     * If it won't be able to retrieve the location after DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds,
-     * it won't wait anymore.
-     */
-    private static final int DELAY = 500;
-    private static final int MAXIMUM_CHECK_TIMEOUT = 10;
+    private GPSLocationManager locationManager;
 
     @Override
 
@@ -122,20 +105,11 @@ public class MainActivity extends AppCompatActivity {
         // Request permissions.
         requestPermissions(PERMISSIONS, REQUEST_CODE);
 
-        // Immediately prepare the last known location.
-        client = LocationServices.getFusedLocationProviderClient(this);
         /**
-         * Callback to retrieve the last known location.
-         * @see FusedLocationProviderClient#getLastLocation() to see how the last location is obtained.
-         * @see com.google.android.gms.tasks.Task#addOnSuccessListener(OnSuccessListener)
-         * to see more info about the used listener.
+         *  When constructor is called, it will retrieve the last known location immediately.
+         * @see GPSLocationManager
          */
-        client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                locationParser.setLocation(location);
-            }
-        });
+        locationManager = new GPSLocationManager();
 
     }
 
@@ -153,37 +127,6 @@ public class MainActivity extends AppCompatActivity {
             new GPSCommandHandler().sendMessage(smsMessage);
         else
             Toast.makeText(this, R.string.sendCommand_fail, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * This method retrieves the last known {@link Location}, parsed as String.
-     * It's static because {@link GPSCommandHandler} needs this method, as well.
-     *
-     * @return The last known location.
-     * @see Location
-     * @see LocationParser
-     * @see LocationParser#toString()
-     */
-    public static String getCurrentLocation() {
-        // Callback to retrieve the last known location.
-        client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                locationParser.setLocation(location);
-            }
-        });
-        int i = 0;
-        // Waits for the callback, until DELAY * MAXIMUM_CHECK_TIMEOUT milliseconds.
-        while (locationParser.isDefault() && i < MAXIMUM_CHECK_TIMEOUT) {
-            // Location is NOT obtained.
-            try {
-                Thread.sleep(DELAY);
-                i++;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return locationParser.toString();
     }
 
 }

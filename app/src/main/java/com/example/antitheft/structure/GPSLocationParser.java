@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
  * a custom toString method.
  *
  * @author Francesco Bau'
- * @version 0.1
+ * @version 1.0
  * @since 26/02/2020
  */
-public class LocationParser {
+public class GPSLocationParser {
     private static final String UNKNOWN_LOCATION_MESSAGE = "Location is NOT acquired.";
     static final String DEFAULT_PROVIDER = "Default";
 
@@ -24,7 +24,7 @@ public class LocationParser {
      * Default constructor: latitude and longitude are set with default values,
      * so the defaultFlag is set to true, as well.
      */
-    public LocationParser() {
+    public GPSLocationParser() {
         Location location = new Location(DEFAULT_PROVIDER);
         latitude = location.getLatitude();
         longitude = location.getLongitude();
@@ -38,7 +38,7 @@ public class LocationParser {
      * @param location The given {@link android.location.Location} instance. It can't be null.
      * @see Location
      */
-    public LocationParser(@NonNull Location location) {
+    public GPSLocationParser(@NonNull Location location) {
         setLocation(location);
     }
 

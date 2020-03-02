@@ -12,11 +12,22 @@ import com.example.antitheft.MainActivity;
  * {@link com.eis.smslibrary.listeners.SMSReceivedServiceListener}.
  *
  * @author Francesco Bau'
- * @version 0.1
+ * @version 1.0
  * @see com.eis.smslibrary.listeners.SMSReceivedServiceListener
  * @since 25/02/2020
  */
 public class GPSCommandReceiver extends SMSReceivedServiceListener {
+
+    private GPSCommandHandler commandHandler;
+
+    /**
+     * Main constructor. It starts the {@link GPSCommandHandler} instance.
+     *
+     * @see GPSCommandHandler
+     */
+    public GPSCommandReceiver() {
+        commandHandler = new GPSCommandHandler();
+    }
 
     /**
      * Listener, needed to obtain all incoming messages, and to check if they need to be handled as
@@ -31,7 +42,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
     public void onMessageReceived(@Nullable SMSMessage message) {
         if (message == null) return;
         if (!isValidCommand(message)) return;
-        new GPSCommandHandler().onCommandReceived(message);
+        commandHandler.onCommandReceived(message);
     }
 
     /**

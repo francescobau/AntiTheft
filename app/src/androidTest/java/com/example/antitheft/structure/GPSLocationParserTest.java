@@ -9,40 +9,40 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test of {@link LocationParser} class.
+ * Test of {@link GPSLocationParser} class.
  *
  * @author Francesco Bau'
- * @see LocationParser for more info about the tested class.
+ * @see GPSLocationParser for more info about the tested class.
  * @since 28/02/2020
  */
-public class LocationParserTest {
+public class GPSLocationParserTest {
 
     private static final float NOT_DEFAULT_ACCURACY = Float.MAX_VALUE;
-    LocationParser locationParser;
+    GPSLocationParser locationParser;
 
     double expectedLatitude = Double.MAX_VALUE;
     double expectedLongitude = Double.MIN_VALUE;
 
     /**
-     * Before starting the tests, the {@link LocationParser} instance needs to be initialized.
+     * Before starting the tests, the {@link GPSLocationParser} instance needs to be initialized.
      *
      * @see Location
-     * @see LocationParser
+     * @see GPSLocationParser
      */
     @Before
     public void init() {
-        locationParser = new LocationParser();
-        Location location = new Location(LocationParser.DEFAULT_PROVIDER);
+        locationParser = new GPSLocationParser();
+        Location location = new Location(locationParser.DEFAULT_PROVIDER);
         location.setLatitude(expectedLatitude);
         location.setLongitude(expectedLongitude);
         locationParser.setLocation(location);
     }
 
     /**
-     * Testing the method {@link LocationParser#getLatitude()}.
+     * Testing the method {@link GPSLocationParser#getLatitude()}.
      *
-     * @see LocationParser
-     * @see LocationParser#getLatitude()
+     * @see GPSLocationParser
+     * @see GPSLocationParser#getLatitude()
      */
     @Test
     public void testLatitude() {
@@ -50,10 +50,10 @@ public class LocationParserTest {
     }
 
     /**
-     * Testing the method {@link LocationParser#getLongitude()}.
+     * Testing the method {@link GPSLocationParser#getLongitude()}.
      *
-     * @see LocationParser
-     * @see LocationParser#getLongitude()
+     * @see GPSLocationParser
+     * @see GPSLocationParser#getLongitude()
      */
     @Test
     public void testLongitude() {
@@ -61,19 +61,19 @@ public class LocationParserTest {
     }
 
     /**
-     * Alternative test of method {@link LocationParser#getLatitude()}.
-     * This one doesn't need the @Before method, and the {@link LocationParser} instance is set ad-hoc.
+     * Alternative test of method {@link GPSLocationParser#getLatitude()}.
+     * This one doesn't need the @Before method, and the {@link GPSLocationParser} instance is set ad-hoc.
      * <p>
      * Another difference is that the longitude is not set in this test.
      *
      * @see Location
-     * @see LocationParser
-     * @see LocationParser#getLatitude()
+     * @see GPSLocationParser
+     * @see GPSLocationParser#getLatitude()
      */
     @Test
     public void testLatitudeA() {
-        LocationParser parser = new LocationParser();
-        Location location = new Location(LocationParser.DEFAULT_PROVIDER);
+        GPSLocationParser parser = new GPSLocationParser();
+        Location location = new Location(locationParser.DEFAULT_PROVIDER);
         location.setLatitude(expectedLatitude);
         parser.setLocation(location);
 
@@ -81,19 +81,19 @@ public class LocationParserTest {
     }
 
     /**
-     * Alternative test of method {@link LocationParser#getLongitude()}.
-     * This one doesn't need the @Before method, and the {@link LocationParser} instance is set ad-hoc.
+     * Alternative test of method {@link GPSLocationParser#getLongitude()}.
+     * This one doesn't need the @Before method, and the {@link GPSLocationParser} instance is set ad-hoc.
      * <p>
      * Another difference is that the latitude is not set in this test.
      *
      * @see Location
-     * @see LocationParser
-     * @see LocationParser#getLongitude()
+     * @see GPSLocationParser
+     * @see GPSLocationParser#getLongitude()
      */
     @Test
     public void testLongitudeA() {
-        LocationParser parser = new LocationParser();
-        Location location = new Location(LocationParser.DEFAULT_PROVIDER);
+        GPSLocationParser parser = new GPSLocationParser();
+        Location location = new Location(locationParser.DEFAULT_PROVIDER);
         location.setLongitude(expectedLongitude);
         parser.setLocation(location);
 
@@ -109,77 +109,77 @@ public class LocationParserTest {
      * must not be considered default, but acquired, instead.
      *
      * @see Location
-     * @see LocationParser
+     * @see GPSLocationParser
      * @see Location#getAccuracy() to see more info about Accuracy.
      * @see Location#getLatitude(), {@link Location#getLongitude()} and their respective fields
      * to see their default values.
-     * @see LocationParser#setLocation(Location) to see how {@link LocationParser} fields are set.
+     * @see GPSLocationParser#setLocation(Location) to see how {@link GPSLocationParser} fields are set.
      */
     @Test
     public void testNotDefault() {
-        Location location = new Location(LocationParser.DEFAULT_PROVIDER);
+        Location location = new Location(locationParser.DEFAULT_PROVIDER);
         location.setLatitude(expectedLatitude);
         location.setLongitude(expectedLongitude);
         // Supposing that we are actually there...
         location.setAccuracy(NOT_DEFAULT_ACCURACY);
-        LocationParser parser = new LocationParser(location);
+        GPSLocationParser parser = new GPSLocationParser(location);
 
         assertFalse(parser.isDefault());
     }
 
     /**
-     * Testing {@link LocationParser#isDefault()} method, after invoking
-     * main constructor {@link LocationParser#LocationParser(Location)}, given a default
+     * Testing {@link GPSLocationParser#isDefault()} method, after invoking
+     * main constructor {@link GPSLocationParser#GPSLocationParser(Location)}, given a default
      * {@link Location} instance.
-     * {@link LocationParser#isDefault()} should return true, because latitude and longitude are
+     * {@link GPSLocationParser#isDefault()} should return true, because latitude and longitude are
      * set with default values.
      *
      * @see Location
-     * @see LocationParser
+     * @see GPSLocationParser
      */
     @Test
     public void testDefault() {
-        Location location = new Location(LocationParser.DEFAULT_PROVIDER);
-        LocationParser parser = new LocationParser(location);
+        Location location = new Location(locationParser.DEFAULT_PROVIDER);
+        GPSLocationParser parser = new GPSLocationParser(location);
 
         assertTrue(parser.isDefault());
     }
 
     /**
-     * Alternative test of {@link LocationParser#isDefault()} method.
+     * Alternative test of {@link GPSLocationParser#isDefault()} method.
      * If someone wants to set default values (latitude, longitude, accuracy)
-     * to the {@link Location} instance, the {@link LocationParser} will be considered default, as well.
+     * to the {@link Location} instance, the {@link GPSLocationParser} will be considered default, as well.
      * <p>
      * But the contrary is not always true.
      *
      * @see Location
-     * @see LocationParser
+     * @see GPSLocationParser
      */
     @Test
     public void testDefaultA() {
-        Location location = new Location(LocationParser.DEFAULT_PROVIDER);
+        Location location = new Location(locationParser.DEFAULT_PROVIDER);
         location.setLatitude(expectedLatitude);
         location.setLongitude(expectedLongitude);
         // Back to default values...
-        location.setLatitude(new Location(LocationParser.DEFAULT_PROVIDER).getLatitude());
-        location.setLongitude(new Location(LocationParser.DEFAULT_PROVIDER).getLongitude());
+        location.setLatitude(new Location(locationParser.DEFAULT_PROVIDER).getLatitude());
+        location.setLongitude(new Location(locationParser.DEFAULT_PROVIDER).getLongitude());
 
-        LocationParser parser = new LocationParser(location);
+        GPSLocationParser parser = new GPSLocationParser(location);
 
         assertTrue(parser.isDefault());
     }
 
     /**
-     * Testing main constructor {@link LocationParser#LocationParser(Location)}, after giving
+     * Testing main constructor {@link GPSLocationParser#GPSLocationParser(Location)}, after giving
      * a null {@link Location} instance as a parameter.
      *
      * @see Location
-     * @see LocationParser
-     * @see LocationParser#LocationParser(Location)
+     * @see GPSLocationParser
+     * @see GPSLocationParser#GPSLocationParser(Location)
      * @see NullPointerException
      */
     @Test(expected = NullPointerException.class)
     public void testNullLocation() {
-        locationParser = new LocationParser(null);
+        locationParser = new GPSLocationParser(null);
     }
 }

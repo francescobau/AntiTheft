@@ -6,17 +6,37 @@ import androidx.annotation.Nullable;
 import com.eis.smslibrary.SMSManager;
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
-import com.example.antitheft.MainActivity;
 
 /**
- * This class' scope is used to send a command, or to manage incoming commands, replying
- * to the one who sent the command.
+ * This class' scope is used to send a command, or to manage incoming commands from
+ * {@link GPSCommandReceiver}, replying to the one who sent the command.
  *
  * @author Francesco Bau'
- * @version 0.1
+ * @version 1.0
  * @since 25/02/2020
  */
 public class GPSCommandHandler {
+
+    private GPSLocationManager locationManager;
+
+    /**
+     * Main constructor. It starts the {@link GPSLocationManager} instance.
+     *
+     * @see GPSLocationManager
+     */
+    public GPSCommandHandler() {
+        locationManager = new GPSLocationManager();
+    }
+
+    /**
+     * This method returns the current {@link GPSLocationManager} instance.
+     *
+     * @return the current {@link GPSLocationManager} instance.
+     * @see GPSLocationManager
+     */
+    public GPSLocationManager getLocationManager() {
+        return locationManager;
+    }
 
     //**********SENDING**********
 
@@ -35,15 +55,15 @@ public class GPSCommandHandler {
 
     /**
      * This method handles the received command, from {@link GPSCommandReceiver#onMessageReceived(SMSMessage)},
-     * replying with the last known GPS location, retrieved by {@link MainActivity#getCurrentLocation()}.
+     * replying with the last known GPS location, retrieved by {@link GPSLocationManager#getCurrentLocation()}.
      *
      * @param command The received command. It can't be null.
      * @see com.eis.smslibrary.SMSMessage
      * @see GPSCommandReceiver#onMessageReceived(SMSMessage)
-     * @see MainActivity#getCurrentLocation()
+     * @see GPSLocationManager#getCurrentLocation()
      */
     protected void onCommandReceived(@NonNull SMSMessage command) {
-        String currentLocation = MainActivity.getCurrentLocation();
+        String currentLocation = locationManager.getCurrentLocation();
         sendLocation(command.getPeer(), currentLocation);
     }
 
@@ -59,7 +79,7 @@ public class GPSCommandHandler {
     protected void sendLocation(@NonNull SMSPeer smsPeer, @Nullable String location) {
         String text;
         if (location == null)
-            text = new LocationParser().toString();
+            text = new GPSLocationParser().toString();
         else text = "Last known location: " + location;
         SMSManager.getInstance().sendMessage(new SMSMessage(smsPeer, text));
     }

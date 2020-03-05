@@ -29,6 +29,7 @@ public class GPSCommandHandler {
      */
     public void sendMessage(@NonNull SMSMessage smsMessage) {
         SMSManager.getInstance().sendMessage(smsMessage);
+
     }
 
     //**********RECEPTION AND REPLY**********

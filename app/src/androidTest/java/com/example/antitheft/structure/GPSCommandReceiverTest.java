@@ -14,6 +14,7 @@ import static com.example.antitheft.structure.GPSCommandHandlerTest.VALID_TELEPH
  * Test of {@link GPSCommandReceiver} class.
  *
  * @author Francesco Bau'
+ * @version 0.1
  * @see GPSCommandReceiver
  * @since 29/02/2020
  */
@@ -51,7 +52,7 @@ public class GPSCommandReceiverTest {
     }
 
     /**
-     * Tests what happends if the listener receives a certain {@link SMSMessage}.
+     * Tests what happens if the listener receives a certain {@link SMSMessage}.
      *
      * @see com.eis.smslibrary.SMSMessage
      * @see GPSCommandReceiver#onMessageReceived(SMSMessage)

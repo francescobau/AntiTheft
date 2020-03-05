@@ -8,6 +8,7 @@ import org.junit.Test;
 
 /**
  * @author Francesco Bau'
+ * @version 0.1
  * @since 29/02/2020
  */
 public class GPSCommandHandlerTest {
@@ -18,7 +19,7 @@ public class GPSCommandHandlerTest {
     private GPSCommandHandler handler;
 
     static final String LOCATION = "";
-    // WARNING: insert a VALIID telephoneNumber, because it sends an SMS to that telephone number.
+    // WARNING: insert a VALID telephoneNumber, because it sends an SMS to that telephone number.
     static final String VALID_TELEPHONE_NUMBER = "+393515186755";
     static final String TEXT_MESSAGE = "";
 

@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
  * Test of {@link LocationParser} class.
  *
  * @author Francesco Bau'
+ * @version 0.1
  * @see LocationParser for more info about the tested class.
  * @since 28/02/2020
  */

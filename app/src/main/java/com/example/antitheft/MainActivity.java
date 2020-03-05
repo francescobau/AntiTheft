@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Preconditions;
 
 import com.eis.smslibrary.SMSManager;
 import com.eis.smslibrary.SMSMessage;
@@ -26,7 +28,6 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
  * Main Activity. It takes UI commands as input, and, as an output, it gives them a certain action.
- * Its current scope is just to send SMS, based by what does the User decide to do.
  *
  * @author Francesco Bau'
  * @version 0.1
@@ -56,12 +57,17 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 0;
 
+    /**
+     * The {@link LocationParser} instance, needed to parse a {@link Location}. It can't be null.
+     */
+    @NonNull
     private static LocationParser locationParser = new LocationParser();
     /**
-     * The client used to retrieve the last known {@link Location}.
+     * The client used to retrieve the last known {@link Location}. It can't be null.
      *
      * @see FusedLocationProviderClient for more info.
      */
+    @NonNull
     private static FusedLocationProviderClient client;
 
     /**
@@ -71,8 +77,20 @@ public class MainActivity extends AppCompatActivity {
     private static final int DELAY = 500;
     private static final int MAXIMUM_CHECK_TIMEOUT = 10;
 
-    @Override
 
+    /**
+     * Method called when {@link MainActivity} starts.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     * @see AppCompatActivity#onCreate(Bundle)
+     * @see androidx.fragment.app.FragmentActivity#onCreate(Bundle)
+     * @see androidx.activity.ComponentActivity#onCreate(Bundle)
+     * @see androidx.core.app.ComponentActivity#onCreate(Bundle)
+     * @see android.app.Activity#onCreate(Bundle)
+     */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -86,6 +104,11 @@ public class MainActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.sendButton);
         //activity = this;
 
+        /**
+         * Setting the {@link View.OnClickListener} for the button.
+         * @see View.OnClickListener
+         * @see View#setOnClickListener(View.OnClickListener)
+         */
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +188,13 @@ public class MainActivity extends AppCompatActivity {
      * @see LocationParser#toString()
      */
     public static String getCurrentLocation() {
-        // Callback to retrieve the last known location.
+        // If client is null, it can't retrieve the last known location.
+        Preconditions.checkNotNull(client, "Client is null. Can't retrieve last known location.");
+
+        /** Callback to retrieve the last known location.
+         * @see FusedLocationProviderClient#getLastLocation()
+         * @see com.google.android.gms.tasks.Task#addOnSuccessListener(OnSuccessListener)
+         */
         client.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {

@@ -43,8 +43,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      * @see com.eis.smslibrary.SMSMessage#getData()
      */
     private boolean isValidCommand(@NonNull SMSMessage smsMessage) {
-        boolean flag = smsMessage.getData().contains(MainActivity.FULL_DEFAULT_LOCATE_COMMAND);
-        return flag;
+        return smsMessage.getData().contains(MainActivity.FULL_DEFAULT_LOCATE_COMMAND);
     }
 
 }

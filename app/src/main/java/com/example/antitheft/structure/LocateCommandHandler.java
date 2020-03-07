@@ -1,21 +1,26 @@
 package com.example.antitheft.structure;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.eis.smslibrary.SMSManager;
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
+import com.example.antitheft.MainActivity;
 
 /**
  * This class' scope is used to send a command, or to manage incoming commands from
  * {@link GPSCommandReceiver}, replying to the one who sent the command.
  *
  * @author Francesco Bau'
- * @version 1.0
+ * @version 1.1
  * @since 25/02/2020
  */
-public class GPSCommandHandler {
+public class LocateCommandHandler {
+
+    private static final String LOCATE_COMMAND = "LOCATE";
 
     private GPSLocationManager locationManager;
 
@@ -24,8 +29,17 @@ public class GPSCommandHandler {
      *
      * @see GPSLocationManager
      */
-    public GPSCommandHandler() {
+    public LocateCommandHandler() {
         locationManager = new GPSLocationManager();
+    }
+
+    /**
+     * //TODO
+     *
+     * @param gpsLocationManager
+     */
+    public LocateCommandHandler(@NonNull GPSLocationManager gpsLocationManager) {
+        this.locationManager = gpsLocationManager;
     }
 
     /**
@@ -41,30 +55,32 @@ public class GPSCommandHandler {
     //**********SENDING**********
 
     /**
-     * This method sends a given message (command).
+     * This method sends a given message (command) to a certain {@link SMSPeer}.
      *
-     * @param smsMessage The message to send. It can't be null.
+     * @param smsPeer The destination {@link SMSPeer}. It can't be null.
      * @see com.eis.smslibrary.SMSMessage
      * @see com.eis.smslibrary.SMSManager
      */
-    public void sendMessage(@NonNull SMSMessage smsMessage) {
-        SMSManager.getInstance().sendMessage(smsMessage);
+    public void sendLocateCommandTo(@NonNull SMSPeer smsPeer) {
+        String text = MainActivity.DEFAULT_COMMAND_PREFIX + " " + LOCATE_COMMAND;
+        SMSMessage message = new SMSMessage(smsPeer, text);
+        SMSManager.getInstance().sendMessage(message);
     }
 
     //**********RECEPTION AND REPLY**********
 
     /**
-     * This method handles the received command, from {@link GPSCommandReceiver#onMessageReceived(SMSMessage)},
-     * replying with the last known GPS location, retrieved by {@link GPSLocationManager#getCurrentLocation()}.
+     * This method handles the received peer, from {@link GPSCommandReceiver#onMessageReceived(SMSMessage)},
+     * replying with the last known GPS location, retrieved by {@link GPSLocationManager#getCurrentLocation(Context)}.
      *
-     * @param command The received command. It can't be null.
+     * @param peer The given peer. It can't be null.
      * @see com.eis.smslibrary.SMSMessage
      * @see GPSCommandReceiver#onMessageReceived(SMSMessage)
-     * @see GPSLocationManager#getCurrentLocation()
+     * @see GPSLocationManager#getCurrentLocation(Context)
      */
-    protected void onCommandReceived(@NonNull SMSMessage command) {
-        String currentLocation = locationManager.getCurrentLocation();
-        sendLocation(command.getPeer(), currentLocation);
+    protected void onLocateCommandReceivedBy(@NonNull SMSPeer peer) {
+        String currentLocation = locationManager.getCurrentLocation(MainActivity.getActivity());
+        sendLocation(peer, currentLocation);
     }
 
     /**
@@ -79,7 +95,7 @@ public class GPSCommandHandler {
     protected void sendLocation(@NonNull SMSPeer smsPeer, @Nullable String location) {
         String text;
         if (location == null)
-            text = new GPSLocationParser().toString();
+            text = new LocationParser().toString();
         else text = "Last known location: " + location;
         SMSManager.getInstance().sendMessage(new SMSMessage(smsPeer, text));
     }

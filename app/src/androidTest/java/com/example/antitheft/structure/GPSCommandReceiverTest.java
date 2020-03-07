@@ -1,19 +1,22 @@
 package com.example.antitheft.structure;
 
+import android.util.Log;
+
 import com.eis.smslibrary.SMSMessage;
 import com.eis.smslibrary.SMSPeer;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.example.antitheft.MainActivity.FULL_DEFAULT_LOCATE_COMMAND;
-import static com.example.antitheft.structure.GPSCommandHandlerTest.TEXT_MESSAGE;
-import static com.example.antitheft.structure.GPSCommandHandlerTest.VALID_TELEPHONE_NUMBER;
+import static com.example.antitheft.MainActivity.DEFAULT_COMMAND_PREFIX;
+import static com.example.antitheft.structure.LocateCommandHandlerTest.TEXT_MESSAGE;
+import static com.example.antitheft.structure.LocateCommandHandlerTest.VALID_TELEPHONE_NUMBER;
 
 /**
  * Test of {@link GPSCommandReceiver} class.
  *
  * @author Francesco Bau'
+ * @version 1.1
  * @see GPSCommandReceiver
  * @since 29/02/2020
  */
@@ -37,7 +40,7 @@ public class GPSCommandReceiverTest {
     }
 
     /**
-     * Tests what happens if the listener receives a null message.
+     * Tests what happens if the listener receives a null {@link SMSMessage}.
      * Nothing bad should happen, since it's @Nullable, and method
      * {@link GPSCommandReceiver#onMessageReceived(SMSMessage)} is supposed to completely ignore
      * null {@link SMSMessage} parameters.
@@ -51,7 +54,7 @@ public class GPSCommandReceiverTest {
     }
 
     /**
-     * Tests what happends if the listener receives a certain {@link SMSMessage}.
+     * Tests what happens if the listener receives a certain {@link SMSMessage}.
      *
      * @see com.eis.smslibrary.SMSMessage
      * @see GPSCommandReceiver#onMessageReceived(SMSMessage)
@@ -70,7 +73,7 @@ public class GPSCommandReceiverTest {
      */
     @Test
     public void onValidLocateCommandReceived() {
-        SMSMessage message = new SMSMessage(smsPeer, FULL_DEFAULT_LOCATE_COMMAND);
+        SMSMessage message = new SMSMessage(smsPeer, DEFAULT_COMMAND_PREFIX);
         receiver.onMessageReceived(message);
     }
 }

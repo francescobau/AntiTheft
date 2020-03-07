@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.eis.smslibrary.SMSMessage;
+import com.eis.smslibrary.SMSPeer;
 import com.eis.smslibrary.listeners.SMSReceivedServiceListener;
 import com.example.antitheft.MainActivity;
 
@@ -12,21 +13,21 @@ import com.example.antitheft.MainActivity;
  * {@link com.eis.smslibrary.listeners.SMSReceivedServiceListener}.
  *
  * @author Francesco Bau'
- * @version 1.0
+ * @version 1.1
  * @see com.eis.smslibrary.listeners.SMSReceivedServiceListener
  * @since 25/02/2020
  */
 public class GPSCommandReceiver extends SMSReceivedServiceListener {
 
-    private GPSCommandHandler commandHandler;
+    private LocateCommandHandler commandHandler;
 
     /**
-     * Main constructor. It starts the {@link GPSCommandHandler} instance.
+     * Main constructor. It starts the {@link LocateCommandHandler} instance.
      *
-     * @see GPSCommandHandler
+     * @see LocateCommandHandler
      */
     public GPSCommandReceiver() {
-        commandHandler = new GPSCommandHandler();
+        commandHandler = new LocateCommandHandler();
     }
 
     /**
@@ -35,14 +36,14 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      *
      * @param message The incoming message.
      * @see com.eis.smslibrary.SMSMessage
-     * @see GPSCommandHandler
-     * @see GPSCommandHandler#onCommandReceived(SMSMessage)
+     * @see LocateCommandHandler
+     * @see LocateCommandHandler#onLocateCommandReceivedBy(SMSPeer)
      */
     @Override
     public void onMessageReceived(@Nullable SMSMessage message) {
         if (message == null) return;
         if (!isValidCommand(message)) return;
-        commandHandler.onCommandReceived(message);
+        commandHandler.onLocateCommandReceivedBy(message.getPeer());
     }
 
     /**
@@ -54,8 +55,7 @@ public class GPSCommandReceiver extends SMSReceivedServiceListener {
      * @see com.eis.smslibrary.SMSMessage#getData()
      */
     private boolean isValidCommand(@NonNull SMSMessage smsMessage) {
-        boolean flag = smsMessage.getData().contains(MainActivity.FULL_DEFAULT_LOCATE_COMMAND);
-        return flag;
+        return smsMessage.getData().contains(MainActivity.DEFAULT_COMMAND_PREFIX);
     }
 
 }
